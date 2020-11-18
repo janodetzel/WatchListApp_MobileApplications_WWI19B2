@@ -1,20 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, text } from 'react-native';
+import { AppLoading } from 'expo';
+import {
+  useFonts,
+  DMMono_300Light,
+  DMMono_400Regular,
+  DMMono_500Medium,
+} from '@expo-google-fonts/dm-mono'
+
+import Home from './src/Components/Views/Home';
+import { Colors } from './src/styles/colors';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app asdf!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  let [fontsLoaded] = useFonts({
+    DMMono_500Medium,
+  });
+
+  const [state, setstate] = useState({ user: "Preview" })
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.app}>
+        <StatusBar style="auto" />
+        <Home user={state.user} logOut={() => handleLogOut()} />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  app: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.primaryDark,
+    color: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
