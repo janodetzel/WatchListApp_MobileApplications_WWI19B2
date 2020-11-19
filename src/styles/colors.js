@@ -7,6 +7,9 @@ export const Colors = {
     primaryLight: '#01394c',
     secondaryLight: '#002837',
 
+    green: '#00ff88',
+    pink: '#e52e71',
+
     black: '#000000',
     white: '#ffffff',
 }
