@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, View, text } from 'react-native';
+import { StyleSheet, SafeAreaView, text } from 'react-native';
 import { AppLoading } from 'expo';
 import {
   useFonts,
@@ -23,10 +23,10 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
-      <View style={styles.app}>
+      <SafeAreaView style={styles.app}>
         <StatusBar style="auto" />
         <Home user={state.user} logOut={() => handleLogOut()} />
-      </View>
+      </SafeAreaView>
     );
   }
 }

@@ -9,6 +9,8 @@ import { REACT_APP_MOVIE_DB_API_TOKEN } from '@env'
 import { posterSrcSm } from '../../Utils/theMovieDB'
 import { Colors } from '../../styles/colors'
 
+import Button from '../Atoms/Button';
+
 const CardList = props => {
 
     const [state, setState] = useState({
@@ -35,6 +37,7 @@ const CardList = props => {
     return (
         <View style={styles.card}>
             <View style={styles.deleteButton}>
+                <Button type="delete"></Button>
             </View>
             <View style={styles.cardWrapper}>
                 <View style={styles.posterWrapper}>
@@ -42,7 +45,6 @@ const CardList = props => {
                         PlaceholderContent={<ActivityIndicator />}
                     ></Image>
                 </View>
-
                 <View style={styles.titleBar}>
                     <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
                     <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
@@ -54,29 +56,43 @@ const CardList = props => {
                     numberOfLines={2}
                     seeMoreText={"Read more ▼"}
                     seeLessText={"Read less ▲"}
-                    seeLessStyle={{ color: Colors.green }}
+                    seeLessStyle={{ color: Colors.pink }}
                     seeMoreStyle={{ color: Colors.green }}
-                    style={styles.font}> {state.overview}
+                    backgroundColor={Colors.secondaryDark}
+                    style={styles.font}>{state.overview}
                 </ReadMore>
+
+                <View style={[styles.genres]}>
+                    {state.genres &&
+                        state.genres.map((genre, key) => {
+                            return (
+                                <Text key={key} style={styles.genre}>{genre.name}</Text>
+                            )
+                        })
+                    }
+                </View>
+
                 <View style={styles.footer}>
                     <View style={styles.genres}></View>
-                    <Text style={[styles.font]}>{state.created.toDateString()}</Text>
+                    <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
                 </View>
             </View>
         </View>
     )
 }
 
-
-
-
 const styles = StyleSheet.create({
     font: {
         fontFamily: 'DMMono_500Medium',
         color: Colors.white,
     },
+    deleteButton: {
+        position: "absolute",
+        top: 8,
+        left: 8,
+    },
     card: {
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "column",
 
@@ -84,7 +100,7 @@ const styles = StyleSheet.create({
         width: 250,
         minWidth: 200,
         margin: 0,
-        padding: 24,
+        padding: 16,
         paddingBottom: 0,
         borderRadius: 16,
         overflow: "visible",
@@ -102,7 +118,7 @@ const styles = StyleSheet.create({
     posterWrapper: {
         justifyContent: "center",
         alignItems: "center",
-        marginVertical: 16,
+        marginBottom: 16,
     },
     poster: {
         borderRadius: 16,
@@ -112,7 +128,8 @@ const styles = StyleSheet.create({
     titleBar: {
         flexWrap: "wrap",
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        marginBottom: 4,
     },
     title: {
         flex: 2,
@@ -125,6 +142,34 @@ const styles = StyleSheet.create({
     },
     tagline: {
         color: Colors.muted,
+        marginBottom: 8,
+    },
+    overview: {
+        marginBottom: 16,
+
+    },
+    genres: {
+        flexWrap: "wrap",
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        paddingHorizontal: 16,
+        paddingTop: 8,
+    },
+    genre: {
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        textTransform: "uppercase",
+        borderRadius: 16,
+        borderWidth: 3,
+        borderColor: Colors.white,
+        color: Colors.white,
+        fontWeight: "bold",
+        fontSize: 6
+    },
+    footer: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 16,
     }
 
 });
