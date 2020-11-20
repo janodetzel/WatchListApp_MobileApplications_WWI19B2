@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator, Dimensions } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Dimensions, TouchableHighlight } from 'react-native';
 import { Text, Image } from 'react-native-elements';
 import ReadMore from '@fawazahmed/react-native-read-more';
 import Moment from 'moment';
@@ -12,6 +12,16 @@ import { Colors } from '../../styles/colors'
 import Button from '../Atoms/Button';
 
 const CardList = props => {
+
+    const [isPress, setIsPress] = React.useState(false);
+
+    const touchProps = {
+        activeOpacity: 1,
+
+        style: isPress ? [styles.card, styles.pressed] : [styles.card],
+        onPress: () => setIsPress(!isPress)
+    }
+
 
     const [state, setState] = useState({
         created: new Date(),
@@ -35,49 +45,52 @@ const CardList = props => {
 
 
     return (
-        <View style={styles.card}>
-            <View style={styles.deleteButton}>
-                <Button type="delete"></Button>
+        <TouchableHighlight {...touchProps}>
+            <View >
+                <View style={styles.deleteButton}>
+                    <Button type="delete"></Button>
+                </View>
+                <View style={styles.cardWrapper}>
+                    <View style={styles.posterWrapper}>
+                        <Image source={{ uri: posterSrcSm + state.poster_path }} style={styles.poster}
+                            PlaceholderContent={<ActivityIndicator />}
+                        ></Image>
+                    </View>
+                    <View style={styles.titleBar}>
+                        <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
+                        <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
+                    </View>
+
+                    <Text style={[styles.font, styles.tagline]}>{state.tagline}</Text>
+                    <ReadMore
+                        wrapperStyle={[styles.overview, styles.font]}
+                        numberOfLines={2}
+                        seeMoreText={"Read more ▼"}
+                        seeLessText={"Read less ▲"}
+                        seeLessStyle={{ color: Colors.pink }}
+                        seeMoreStyle={{ color: Colors.green }}
+                        backgroundColor={Colors.secondaryDark}
+                        style={styles.font}>{state.overview}
+                    </ReadMore>
+
+                    <View style={[styles.genres]}>
+                        {state.genres &&
+                            state.genres.map((genre, key) => {
+                                return (
+                                    <Text key={key} style={styles.genre}>{genre.name}</Text>
+                                )
+                            })
+                        }
+                    </View>
+
+                    <View style={styles.footer}>
+                        <View style={styles.genres}></View>
+                        <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
+                    </View>
+                </View>
             </View>
-            <View style={styles.cardWrapper}>
-                <View style={styles.posterWrapper}>
-                    <Image source={{ uri: posterSrcSm + state.poster_path }} style={styles.poster}
-                        PlaceholderContent={<ActivityIndicator />}
-                    ></Image>
-                </View>
-                <View style={styles.titleBar}>
-                    <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
-                    <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
-                </View>
+        </TouchableHighlight>
 
-                <Text style={[styles.font, styles.tagline]}>{state.tagline}</Text>
-                <ReadMore
-                    wrapperStyle={[styles.overview, styles.font]}
-                    numberOfLines={2}
-                    seeMoreText={"Read more ▼"}
-                    seeLessText={"Read less ▲"}
-                    seeLessStyle={{ color: Colors.pink }}
-                    seeMoreStyle={{ color: Colors.green }}
-                    backgroundColor={Colors.secondaryDark}
-                    style={styles.font}>{state.overview}
-                </ReadMore>
-
-                <View style={[styles.genres]}>
-                    {state.genres &&
-                        state.genres.map((genre, key) => {
-                            return (
-                                <Text key={key} style={styles.genre}>{genre.name}</Text>
-                            )
-                        })
-                    }
-                </View>
-
-                <View style={styles.footer}>
-                    <View style={styles.genres}></View>
-                    <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
-                </View>
-            </View>
-        </View>
     )
 }
 
@@ -99,7 +112,10 @@ const styles = StyleSheet.create({
         minHeight: 350,
         width: 250,
         minWidth: 200,
-        margin: 0,
+
+        transform: [{ translateX: 130 }],
+        marginRight: -130,
+        marginVertical: 50,
         padding: 16,
         paddingBottom: 0,
         borderRadius: 16,
@@ -115,6 +131,10 @@ const styles = StyleSheet.create({
         shadowRadius: 24,
         elevation: 24,
     },
+    pressed: {
+        marginRight: 0,
+    },
+
     posterWrapper: {
         justifyContent: "center",
         alignItems: "center",
@@ -159,7 +179,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 6,
         textTransform: "uppercase",
-        borderRadius: 16,
+        borderRadius: 12,
         borderWidth: 3,
         borderColor: Colors.white,
         color: Colors.white,
@@ -167,7 +187,6 @@ const styles = StyleSheet.create({
         fontSize: 6
     },
     footer: {
-        justifyContent: "center",
         alignItems: "center",
         marginBottom: 16,
     }

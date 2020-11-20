@@ -17,6 +17,9 @@ const Home = props => {
             <View style={styles.cardListContainer}>
                 <CardList key={1} user={props.user} title={"Action"} deleteList={(props) => handleDeleteCardList(props)}></CardList>
             </View>
+            <View style={styles.cardListContainer}>
+                <CardList key={1} user={props.user} title={"Action"} deleteList={(props) => handleDeleteCardList(props)}></CardList>
+            </View>
         </ScrollView>
     )
 }
@@ -27,7 +30,8 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         color: "#fff",
-        alignItems: "center"
+        alignItems: "center",
+        margin: 32,
     },
     greeting: {
         fontFamily: 'DMMono_500Medium',

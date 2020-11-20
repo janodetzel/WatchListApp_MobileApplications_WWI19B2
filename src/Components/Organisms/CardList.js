@@ -9,6 +9,8 @@ import Card from "../Molekules/Card"
 
 const CardList = props => {
 
+    const cards = [550, 550, 550]
+
     return (
         <View style={styles.cardList}>
             <View style={styles.header}>
@@ -18,10 +20,9 @@ const CardList = props => {
             <View style={styles.scrollContainer}>
                 <ScrollView
                     horizontal={true}>
-                    <Card movieId={550}></Card>
-                    <Card movieId={123}></Card>
-                    <Card movieId={550}></Card>
-                    <Card movieId={550}></Card>
+                    {cards.map((card, key) => {
+                        return <Card key={key} movieId={card}></Card>
+                    })}
                 </ScrollView>
             </View>
         </View>
@@ -31,6 +32,7 @@ const CardList = props => {
 const styles = StyleSheet.create({
     cardList: {
         backgroundColor: Colors.primaryDark,
+        marginBottom: 32,
     },
     header: {
         color: "#fff",
@@ -38,7 +40,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         marginHorizontal: 16,
-        marginBottom: 8
     },
     title: {
         fontFamily: 'DMMono_500Medium',

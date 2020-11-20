@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, } from 'react-native';
 import { Icon } from 'react-native-elements'
 
@@ -6,29 +6,39 @@ import { Colors } from '../../styles/colors'
 
 const Button = props => {
 
-    const onPress = (e) => {
 
+    const [isPress, setIsPress] = React.useState(false);
+
+    const buttonProps = {
+        type: "feather",
+        color: isPress ? Colors.green : Colors.pink,
+        style: [styles.icon],
+        onPress: () => {
+            setIsPress(!isPress)
+            props.onPress()
+
+        }
     }
 
     switch (props.type) {
         case "addList": {
             return (
-                <Icon name="minus-circle" type="feather" color={Colors.pink} style={styles.icon} onPress={props.onPress}></Icon>
+                <Icon name="folder-plus" {...buttonProps}></Icon>
 
             )
         }
         case "addCard": {
-            return (<Icon name="minus-circle" type="feather" color={Colors.pink} style={styles.icon} onPress={props.onPress}></Icon>
+            return (<Icon name="plus-circle" {...buttonProps}></Icon>
             )
         }
         case "delete": {
             return (
-                <Icon name="minus-circle" type="feather" color={Colors.pink} style={styles.icon} onPress={props.onPress}></Icon>
+                <Icon name="minus-circle" {...buttonProps}></Icon>
             )
         }
 
         default: return (
-            <Icon name="plus-circle" type="feather" color={Colors.pink} style={styles.icon} onPress={props.onPress}></Icon>
+            <Icon name="plus-circle" {...buttonProps}></Icon>
         )
     }
 
@@ -41,6 +51,9 @@ const styles = StyleSheet.create({
     icon: {
         color: Colors.pink,
         alignSelf: "center",
+    },
+    pressed: {
+        color: Colors.muted,
     }
 });
 
