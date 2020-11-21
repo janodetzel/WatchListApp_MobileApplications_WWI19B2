@@ -2907,6 +2907,11 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha1-3BXKHGcjh8p2vTesCjlbogQqLCg=
 
+github-username-regex@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/github-username-regex/-/github-username-regex-1.0.0.tgz#17356840032f904efe8d93351c7aa7e01eff21b9"
+  integrity sha1-FzVoQAMvkE7+jZM1HHqn4B7/Ibk=
+
 glob@^7.1.2, glob@^7.1.3:
   version "7.1.6"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.6.tgz#141f33b81a7c2492e125594307480c46679278a6"

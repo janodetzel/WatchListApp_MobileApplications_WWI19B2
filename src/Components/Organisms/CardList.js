@@ -9,7 +9,7 @@ import Card from "../Molekules/Card"
 
 const CardList = props => {
 
-    const cards = [550, 550, 550]
+    const cards = [27205, 155, 27205, 155, 670, 64688, 339403, 59440, 670, 64688, 339403, 59440]
 
     return (
         <View style={styles.cardList}>

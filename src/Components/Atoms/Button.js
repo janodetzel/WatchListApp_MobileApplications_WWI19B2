@@ -36,6 +36,11 @@ const Button = props => {
                 <Icon name="minus-circle" {...buttonProps}></Icon>
             )
         }
+        case "navigation": {
+            return (
+                <Icon name="navigation" {...buttonProps}></Icon>
+            )
+        }
 
         default: return (
             <Icon name="plus-circle" {...buttonProps}></Icon>

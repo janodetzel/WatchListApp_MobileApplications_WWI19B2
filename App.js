@@ -11,6 +11,7 @@ import {
 
 import Home from './src/Components/Views/Home';
 import { Colors } from './src/styles/colors';
+import Login from './src/Components/Views/Login';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -19,13 +20,23 @@ export default function App() {
 
   const [state, setstate] = useState({ user: "Preview" })
 
+  const [lin, setLin] = useState(false)
+
+  const onLogIn = cred => {
+    setLin(true)
+    setstate({ user: cred })
+  }
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
     return (
       <SafeAreaView style={styles.app}>
         <StatusBar style="auto" />
-        <Home user={state.user} logOut={() => handleLogOut()} />
+
+        {lin ? <Home user={state.user} logOut={() => handleLogOut()} />
+          : <Login logIn={cred => onLogIn(cred)}></Login>
+        }
       </SafeAreaView>
     );
   }

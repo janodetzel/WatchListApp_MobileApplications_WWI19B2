@@ -17,6 +17,7 @@ const CardList = props => {
 
     const touchProps = {
         activeOpacity: 1,
+        underlayColor: Colors.primaryDark,                               // <-- "backgroundColor" will be always overwritten by "underlayColor"
 
         style: isPress ? [styles.card, styles.pressed] : [styles.card],
         onPress: () => setIsPress(!isPress)
@@ -113,9 +114,11 @@ const styles = StyleSheet.create({
         width: 250,
         minWidth: 200,
 
-        transform: [{ translateX: 130 }],
-        marginRight: -130,
+        // transform: [{ translateX: 130 }],
+        // marginRight: -130,
+
         marginVertical: 50,
+        marginHorizontal: 8,
         padding: 16,
         paddingBottom: 0,
         borderRadius: 16,
