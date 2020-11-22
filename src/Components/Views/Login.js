@@ -16,7 +16,6 @@ const Login = props => {
 
     const handleSubmit = () => {
         if (input && validInput()) {
-            console.log(input)
             props.logIn(input)
         } else {
             inputRef.current.shake()
@@ -29,7 +28,6 @@ const Login = props => {
     }
 
     const validInput = () => {
-        console.log("VALID????", githubUsernameRegex.test(input))
         return githubUsernameRegex.test(input);
     }
 

@@ -9,41 +9,43 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const useStore = create(
   persist(
     (set, get) => ({
-      currUser: { key: null, name: "" },
+      currUser: [],
       users: new Map(),
 
       getUserByName: (userName) =>
         [...get().users].find(([key, value]) => value.name == userName),
-      getUserByKey: (key) => get().users[key],
 
-      logIn: (userName) => {
+      getUserByKey: (key) => get().users.get(key),
+
+
+
+      addUser: (userName) => {
         set((state) =>
           produce(state, (draft) => {
-            const userUUID = uuidv4();
-            const userExists = draft.getUserByName(userName);
+            const userExists = get().getUserByName(userName);
+            console.log("USER EXISTS?", userExists)
             if (!userExists) {
-              draft.users.set(userUUID, {
+              console.log("CREATE NEW USER")
+              draft.users.set(uuidv4(), {
                 name: userName,
                 cardLists: new Map(),
               });
-              draft.currUser = { key: userUUID, name: userName };
-            } else {
-              console.log("USER EXISTS", userExists);
-              console.log("USER KEY", state.getUserByName(userName)[0]);
-              draft.currUser = {
-                key: userExists[0],
-                name: userExists[1].name,
-              };
             }
           })
         );
       },
 
-      logOut: () => set((state) => (state.currUser = { key: null, name: "" })),
+
+      // logIn: userName => set(state => (state.currUser = get().getUserByName(userName))),
+
+      logIn: userName => set(state => produce(state, draft => {
+        draft.currUser = get().getUserByName(userName)
+      })),
+      logOut: () => set(state => state.currUser = []),
 
       clean: () =>
         set((state) => {
-          state.currUser = { key: null, name: "" };
+          state.currUser = [];
           state.users = new Map();
           AsyncStorage.clear();
         }),
