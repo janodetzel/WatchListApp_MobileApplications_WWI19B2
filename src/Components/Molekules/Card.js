@@ -45,53 +45,51 @@ const CardList = props => {
 
 
     return (
-        <TouchableHighlight {...touchProps}>
-            <View>
-                <View style={styles.deleteButton}>
-                    <Button type="delete"></Button>
+        <View style={styles.card}>
+            <View style={styles.deleteButton}>
+                <Button type="delete"></Button>
+            </View>
+            <View style={styles.cardWrapper}>
+                <View style={styles.posterWrapper}>
+                    <Image source={{ uri: posterSrcSm + state.poster_path }} style={styles.poster}
+                        PlaceholderContent={<ActivityIndicator />}
+                    ></Image>
                 </View>
-                <View style={styles.cardWrapper}>
-                    <View style={styles.posterWrapper}>
-                        <Image source={{ uri: posterSrcSm + state.poster_path }} style={styles.poster}
-                            PlaceholderContent={<ActivityIndicator />}
-                        ></Image>
-                    </View>
 
-                    <View style={styles.titleBar}>
-                        <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
-                        <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
-                    </View>
+                <View style={styles.titleBar}>
+                    <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
+                    <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
+                </View>
 
-                    <Text style={[styles.font, styles.tagline]}>{state.tagline}</Text>
+                <Text style={[styles.font, styles.tagline]}>{state.tagline}</Text>
 
-                    <ReadMore
-                        wrapperStyle={[styles.overview, styles.font]}
-                        numberOfLines={2}
-                        seeMoreText={"Read more ▼"}
-                        seeLessText={"Read less ▲"}
-                        seeLessStyle={{ color: Colors.pink }}
-                        seeMoreStyle={{ color: Colors.green }}
-                        backgroundColor={Colors.secondaryDark}
-                        style={styles.font}>{state.overview}
-                    </ReadMore>
+                <ReadMore
+                    wrapperStyle={[styles.overview, styles.font]}
+                    numberOfLines={2}
+                    seeMoreText={"Read more ▼"}
+                    seeLessText={"Read less ▲"}
+                    seeLessStyle={{ color: Colors.pink }}
+                    seeMoreStyle={{ color: Colors.green }}
+                    backgroundColor={Colors.secondaryDark}
+                    style={styles.font}>{state.overview}
+                </ReadMore>
 
-                    <View style={[styles.genres]}>
-                        {state.genres &&
-                            state.genres.slice(0, 3).map((genre, key) => {
-                                return (
-                                    <Text key={key} style={styles.genre}>{genre.name}</Text>
-                                )
-                            })
-                        }
-                    </View>
+                <View style={[styles.genres]}>
+                    {state.genres &&
+                        state.genres.slice(0, 3).map((genre, key) => {
+                            return (
+                                <Text key={key} style={styles.genre}>{genre.name}</Text>
+                            )
+                        })
+                    }
+                </View>
 
-                    <View style={styles.footer}>
-                        <View style={styles.genres}></View>
-                        <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
-                    </View>
+                <View style={styles.footer}>
+                    <View style={styles.genres}></View>
+                    <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
                 </View>
             </View>
-        </TouchableHighlight>
+        </View>
 
     )
 }
@@ -107,10 +105,6 @@ const styles = StyleSheet.create({
         left: 8,
     },
     card: {
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexDirection: "column",
-
         minHeight: 350,
         width: 250,
         minWidth: 200,
@@ -137,6 +131,11 @@ const styles = StyleSheet.create({
     pressed: {
         // marginRight: 0,
     },
+    cardWrapper: {
+        justifyContent: "space-between",
+        flexDirection: "column",
+        flex: 1,
+    },
     posterWrapper: {
         flex: 1,
         justifyContent: "center",
@@ -144,6 +143,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     poster: {
+        flex: 1,
         borderRadius: 16,
         width: 105,
         height: 150,
@@ -183,16 +183,16 @@ const styles = StyleSheet.create({
         paddingTop: 8,
     },
     genre: {
-        marginHorizontal: 4,
-        paddingHorizontal: 10,
+        margin: 4,
+        paddingHorizontal: 6,
         paddingVertical: 6,
         textTransform: "uppercase",
         borderRadius: 12,
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: Colors.white,
         color: Colors.white,
         fontWeight: "bold",
-        fontSize: 6,
+        fontSize: 8,
     },
     footer: {
         alignItems: "center",

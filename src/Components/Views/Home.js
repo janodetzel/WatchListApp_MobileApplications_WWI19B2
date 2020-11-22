@@ -4,11 +4,14 @@ import { Text } from "react-native-elements";
 
 import { Colors } from "../../styles/colors";
 import CardList from "../Organisms/CardList";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import Button from "../Atoms/Button"
 
 const handleDeleteCardList = (props) => {
   //
+}
+
+const onAddCardList = () => {
+
 }
 
 
@@ -31,10 +34,11 @@ const Home = (props) => {
           deleteList={(props) => handleDeleteCardList(props)}
         ></CardList>
       </View>
+      <Button size={40} type={"addList"} onPress={() => onAddCardList()}></Button>
+
       <View style={styles.footer}>
         <Text style={styles.creator}>Created By Jano Detzel</Text>
         <Text style={styles.logout} onPress={() => props.logOut()}>Log Out</Text>
-
       </View>
     </ScrollView>
   );
@@ -62,6 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     margin: 32
   },
+
   creator: {
     color: Colors.white,
   },

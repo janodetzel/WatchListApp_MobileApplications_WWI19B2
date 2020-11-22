@@ -16,34 +16,33 @@ const Button = props => {
         onPress: () => {
             setIsPress(!isPress)
             props.onPress()
-
         }
     }
 
     switch (props.type) {
         case "addList": {
             return (
-                <Icon name="folder-plus" {...buttonProps}></Icon>
+                <Icon name="folder-plus" size={props.size} {...buttonProps}></Icon>
 
             )
         }
         case "addCard": {
-            return (<Icon name="plus-circle" {...buttonProps}></Icon>
+            return (<Icon name="plus-circle" size={props.size} {...buttonProps}></Icon>
             )
         }
         case "delete": {
             return (
-                <Icon name="minus-circle" {...buttonProps}></Icon>
+                <Icon name="minus-circle" size={props.size} {...buttonProps}></Icon>
             )
         }
         case "navigation": {
             return (
-                <Icon name="navigation" {...buttonProps}></Icon>
+                <Icon name="navigation" size={props.size} {...buttonProps}></Icon>
             )
         }
 
         default: return (
-            <Icon name="plus-circle" {...buttonProps}></Icon>
+            <Icon name="plus-circle" size={props.size} {...buttonProps}></Icon>
         )
     }
 
