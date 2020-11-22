@@ -5,6 +5,13 @@ import { Text } from "react-native-elements";
 import { Colors } from "../../styles/colors";
 import CardList from "../Organisms/CardList";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const handleDeleteCardList = (props) => {
+  //
+}
+
+
 const Home = (props) => {
   return (
     <ScrollView style={styles.home} automaticallyAdjustContentInsets={true}>
@@ -24,13 +31,10 @@ const Home = (props) => {
           deleteList={(props) => handleDeleteCardList(props)}
         ></CardList>
       </View>
-      <View style={styles.cardListContainer}>
-        <CardList
-          key={1}
-          user={props.user}
-          title={"Action"}
-          deleteList={(props) => handleDeleteCardList(props)}
-        ></CardList>
+      <View style={styles.footer}>
+        <Text style={styles.creator}>Created By Jano Detzel</Text>
+        <Text style={styles.logout} onPress={() => props.logOut()}>Log Out</Text>
+
       </View>
     </ScrollView>
   );
@@ -53,6 +57,17 @@ const styles = StyleSheet.create({
     fontFamily: "DMMono_500Medium",
     color: Colors.white,
   },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 32
+  },
+  creator: {
+    color: Colors.white,
+  },
+  logout: {
+    color: Colors.white
+  }
 });
 
 export default Home;

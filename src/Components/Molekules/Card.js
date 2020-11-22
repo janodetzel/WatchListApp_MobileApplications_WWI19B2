@@ -17,8 +17,7 @@ const CardList = props => {
 
     const touchProps = {
         activeOpacity: 1,
-        underlayColor: Colors.primaryDark,                               // <-- "backgroundColor" will be always overwritten by "underlayColor"
-
+        underlayColor: Colors.primaryDark,
         style: isPress ? [styles.card, styles.pressed] : [styles.card],
         onPress: () => setIsPress(!isPress)
     }
@@ -47,7 +46,7 @@ const CardList = props => {
 
     return (
         <TouchableHighlight {...touchProps}>
-            <View >
+            <View>
                 <View style={styles.deleteButton}>
                     <Button type="delete"></Button>
                 </View>
@@ -57,12 +56,14 @@ const CardList = props => {
                             PlaceholderContent={<ActivityIndicator />}
                         ></Image>
                     </View>
+
                     <View style={styles.titleBar}>
                         <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
                         <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
                     </View>
 
                     <Text style={[styles.font, styles.tagline]}>{state.tagline}</Text>
+
                     <ReadMore
                         wrapperStyle={[styles.overview, styles.font]}
                         numberOfLines={2}
@@ -76,7 +77,7 @@ const CardList = props => {
 
                     <View style={[styles.genres]}>
                         {state.genres &&
-                            state.genres.map((genre, key) => {
+                            state.genres.slice(0, 3).map((genre, key) => {
                                 return (
                                     <Text key={key} style={styles.genre}>{genre.name}</Text>
                                 )
@@ -122,7 +123,6 @@ const styles = StyleSheet.create({
         padding: 16,
         paddingBottom: 0,
         borderRadius: 16,
-        overflow: "visible",
 
         backgroundColor: Colors.secondaryDark,
         shadowColor: Colors.black,
@@ -135,10 +135,10 @@ const styles = StyleSheet.create({
         elevation: 24,
     },
     pressed: {
-        marginRight: 0,
+        // marginRight: 0,
     },
-
     posterWrapper: {
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 16,
@@ -149,36 +149,41 @@ const styles = StyleSheet.create({
         height: 150,
     },
     titleBar: {
+        flex: 1,
         flexWrap: "wrap",
         flexDirection: "row",
         justifyContent: "space-between",
         marginBottom: 4,
     },
     title: {
-        flex: 2,
+        flex: 4,
         margin: 0
     },
     date: {
         margin: 0,
         flex: 1,
         alignSelf: "center",
+        textAlign: "right"
+
     },
     tagline: {
+        flex: 1,
         color: Colors.muted,
         marginBottom: 8,
     },
     overview: {
+        flex: 1,
         marginBottom: 16,
-
     },
     genres: {
+        flex: 1,
         flexWrap: "wrap",
         flexDirection: "row",
         justifyContent: "space-evenly",
-        paddingHorizontal: 16,
         paddingTop: 8,
     },
     genre: {
+        marginHorizontal: 4,
         paddingHorizontal: 10,
         paddingVertical: 6,
         textTransform: "uppercase",
@@ -187,7 +192,7 @@ const styles = StyleSheet.create({
         borderColor: Colors.white,
         color: Colors.white,
         fontWeight: "bold",
-        fontSize: 6
+        fontSize: 6,
     },
     footer: {
         alignItems: "center",

@@ -9,22 +9,32 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const useStore = create(
   persist(
     (set, get) => ({
-      loggedIn: null,
-      users: {},
+      currUser: { key: null, name: "" },
+      users: new Map(),
 
-      deleteEverything: () => set({}, true), // clears the entire store, actions included
-
-      addUser: (userName) =>
-        set((state) =>
-          produce(state, (draft) => {
-            const userUUID = uuidv4();
-            draft.users[userUUID] = {
-              name: userName,
-              cardLists: {},
-            };
-            draft.loggedIn = userUUID;
-          })
+      getUserByName: (userName) => ([...get().users].find(([key, value]) => value.name == userName)),
+      getUserByKey: (key) => (get().users[key]),
+      logIn: (userName) =>
+        set((state) => produce(state, (draft) => {
+          const userUUID = uuidv4();
+          const userExists = draft.getUserByName(userName);
+          if (!userExists) {
+            draft.users.set(userUUID, { name: userName, cardLists: new Map() });
+          } else {
+            console.log("USER EXISTS", userExists);
+            console.log("USER KEY", state.getUserByName(userName)[0]);
+          }
+        })
         ),
+      logOut: () => set(state => state.curruser = { key: null, name: "" }),
+
+
+
+      clean: () => set(state => {
+        state.currUser = { key: null, name: "" }
+        state.users = new Map()
+        AsyncStorage.clear()
+      }),
     }),
     {
       name: "MovieStorage", // unique name

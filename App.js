@@ -17,6 +17,9 @@ import { useStore } from "./src/Utils/Zustand";
 import { enableMapSet } from "immer";
 
 import { storeData, getData } from "./src/Utils/Storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 
 export default function App() {
   enableMapSet();
@@ -25,23 +28,31 @@ export default function App() {
     DMMono_500Medium,
   });
 
-  const { store, addUser, clear } = useStore((store) => ({
+  const { store, getUserByName, logIn, logOut, clean } = useStore((store) => ({
     store: store,
-    addUser: store.addUser,
-    clear: store.deleteEverything,
+    getUserByName: store.getUserByName,
+    logIn: store.logIn,
+    logOut: store.logOut,
+    clean: store.clean,
   }));
 
-  const [state, setstate] = useState({ user: "Preview" });
+  const [user, setUser] = useState()
 
-  const [lin, setLin] = useState(false);
 
   const onLogIn = (cred) => {
-    // setLin(true)
-    setstate({ user: cred });
-    console.log("USESTORE", store);
-    addUser(cred);
-    clear();
+    // clean()
+    // AsyncStorage.clear()
+    console.log("STORE", store)
+
+    setUser(cred)
+    logIn(cred);
+
   };
+
+  const onLogOut = () => {
+    setUser()
+    logOut()
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -50,11 +61,11 @@ export default function App() {
       <SafeAreaView style={styles.app}>
         <StatusBar style="auto" />
 
-        {lin ? (
-          <Home user={state.user} logOut={() => handleLogOut()} />
+        {user ? (
+          <Home user={user} logOut={() => onLogOut()} />
         ) : (
-          <Login logIn={(cred) => onLogIn(cred)}></Login>
-        )}
+            <Login logIn={(cred) => onLogIn(cred)}></Login>
+          )}
       </SafeAreaView>
     );
   }

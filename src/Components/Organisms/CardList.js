@@ -15,7 +15,7 @@ const CardList = props => {
         <View style={styles.cardList}>
             <View style={styles.header}>
                 <Text h1 style={styles.title}>{props.title}</Text>
-                <Button type={"delete"}></Button>
+                <Button type={"delete"} onPress={() => props.deleteList()}></Button>
             </View>
             <View style={styles.scrollContainer}>
                 <ScrollView
