@@ -18,8 +18,7 @@ import { enableMapSet } from "immer";
 
 import { storeData, getData } from "./src/Utils/Storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-
+import { useEffect } from "react";
 
 export default function App() {
   enableMapSet();
@@ -28,31 +27,33 @@ export default function App() {
     DMMono_500Medium,
   });
 
-  const { store, getUserByName, logIn, logOut, clean } = useStore((store) => ({
-    store: store,
-    getUserByName: store.getUserByName,
-    logIn: store.logIn,
-    logOut: store.logOut,
-    clean: store.clean,
-  }));
+  const { store, currUser, getUserByName, logIn, logOut, clean } = useStore(
+    (store) => ({
+      store: store,
+      currUser: store.currUser,
+      getUserByName: store.getUserByName,
+      logIn: store.logIn,
+      logOut: store.logOut,
+      clean: store.clean,
+    })
+  );
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState();
 
+  useEffect(() => {
+    setUser(currUser);
+  }, [currUser]);
 
   const onLogIn = (cred) => {
-    // clean()
+    // clean();
     // AsyncStorage.clear()
-    console.log("STORE", store)
-
-    setUser(cred)
+    console.log("STORE", store);
     logIn(cred);
-
   };
 
   const onLogOut = () => {
-    setUser()
-    logOut()
-  }
+    logOut();
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -60,12 +61,11 @@ export default function App() {
     return (
       <SafeAreaView style={styles.app}>
         <StatusBar style="auto" />
-
-        {user ? (
-          <Home user={user} logOut={() => onLogOut()} />
+        {user.key ? (
+          <Home user={user.name} logOut={() => onLogOut()} />
         ) : (
-            <Login logIn={(cred) => onLogIn(cred)}></Login>
-          )}
+          <Login logIn={(cred) => onLogIn(cred)}></Login>
+        )}
       </SafeAreaView>
     );
   }

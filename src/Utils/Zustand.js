@@ -12,29 +12,41 @@ export const useStore = create(
       currUser: { key: null, name: "" },
       users: new Map(),
 
-      getUserByName: (userName) => ([...get().users].find(([key, value]) => value.name == userName)),
-      getUserByKey: (key) => (get().users[key]),
-      logIn: (userName) =>
-        set((state) => produce(state, (draft) => {
-          const userUUID = uuidv4();
-          const userExists = draft.getUserByName(userName);
-          if (!userExists) {
-            draft.users.set(userUUID, { name: userName, cardLists: new Map() });
-          } else {
-            console.log("USER EXISTS", userExists);
-            console.log("USER KEY", state.getUserByName(userName)[0]);
-          }
-        })
-        ),
-      logOut: () => set(state => state.curruser = { key: null, name: "" }),
+      getUserByName: (userName) =>
+        [...get().users].find(([key, value]) => value.name == userName),
+      getUserByKey: (key) => get().users[key],
 
+      logIn: (userName) => {
+        set((state) =>
+          produce(state, (draft) => {
+            const userUUID = uuidv4();
+            const userExists = draft.getUserByName(userName);
+            if (!userExists) {
+              draft.users.set(userUUID, {
+                name: userName,
+                cardLists: new Map(),
+              });
+              draft.currUser = { key: userUUID, name: userName };
+            } else {
+              console.log("USER EXISTS", userExists);
+              console.log("USER KEY", state.getUserByName(userName)[0]);
+              draft.currUser = {
+                key: userExists[0],
+                name: userExists[1].name,
+              };
+            }
+          })
+        );
+      },
 
+      logOut: () => set((state) => (state.currUser = { key: null, name: "" })),
 
-      clean: () => set(state => {
-        state.currUser = { key: null, name: "" }
-        state.users = new Map()
-        AsyncStorage.clear()
-      }),
+      clean: () =>
+        set((state) => {
+          state.currUser = { key: null, name: "" };
+          state.users = new Map();
+          AsyncStorage.clear();
+        }),
     }),
     {
       name: "MovieStorage", // unique name

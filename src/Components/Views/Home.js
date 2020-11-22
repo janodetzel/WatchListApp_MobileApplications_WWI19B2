@@ -4,18 +4,15 @@ import { Text } from "react-native-elements";
 
 import { Colors } from "../../styles/colors";
 import CardList from "../Organisms/CardList";
-import Button from "../Atoms/Button"
-
-const handleDeleteCardList = (props) => {
-  //
-}
-
-const onAddCardList = () => {
-
-}
-
+import Button from "../Atoms/Button";
 
 const Home = (props) => {
+  const handleDeleteCardList = (props) => {
+    //
+  };
+
+  const onAddCardList = () => {};
+
   return (
     <ScrollView style={styles.home} automaticallyAdjustContentInsets={true}>
       <View style={styles.titleContainer}>
@@ -34,11 +31,17 @@ const Home = (props) => {
           deleteList={(props) => handleDeleteCardList(props)}
         ></CardList>
       </View>
-      <Button size={40} type={"addList"} onPress={() => onAddCardList()}></Button>
+      <Button
+        size={40}
+        type={"addList"}
+        onPress={() => onAddCardList()}
+      ></Button>
 
       <View style={styles.footer}>
         <Text style={styles.creator}>Created By Jano Detzel</Text>
-        <Text style={styles.logout} onPress={() => props.logOut()}>Log Out</Text>
+        <Text style={styles.logout} onPress={() => props.logOut()}>
+          Log Out
+        </Text>
       </View>
     </ScrollView>
   );
@@ -64,15 +67,15 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: 32
+    margin: 32,
   },
 
   creator: {
     color: Colors.white,
   },
   logout: {
-    color: Colors.white
-  }
+    color: Colors.white,
+  },
 });
 
 export default Home;
