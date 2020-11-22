@@ -14,7 +14,7 @@ const Button = props => {
         color: isPress ? Colors.green : Colors.pink,
         style: [styles.icon],
         onPress: () => {
-            setIsPress(!isPress)
+            // setIsPress(!isPress)
             props.onPress()
         }
     }

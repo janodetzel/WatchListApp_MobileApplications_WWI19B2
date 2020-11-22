@@ -36,6 +36,12 @@ export const useStore = create((set, get) => ({
     })
   })),
 
+  deleteCardList: cardListKey => set(state => produce(state, (draft) => {
+    draft.users.get(draft.currUserKey).cardLists.delete(cardListKey)
+  })),
+
+
+
   logIn: (userName) =>
     set((state) =>
       produce(state, (draft) => {
