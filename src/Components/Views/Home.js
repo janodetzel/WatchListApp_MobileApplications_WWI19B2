@@ -11,11 +11,17 @@ import Button from "../Atoms/Button";
 
 const Home = (props) => {
 
+  const [overLay, setOverlay] = useState(false);
 
-  const { store } = useStore(
+  const toggleOverlay = () => {
+    setOverlay(!overLay)
+  }
+
+  const { store, user, addCardList } = useStore(
     (store) => ({
       store: store,
-      user: store.get().users[props.userKey]
+      user: store.users.get(props.userKey),
+      addCardList: store.addCardList
     }), shallow
   );
 
@@ -25,11 +31,13 @@ const Home = (props) => {
   }, [])
 
 
-  const handleDeleteCardList = (props) => {
+  const onDeleteCardList = cardListKey => {
     //
   };
 
-  const onAddCardList = () => { };
+  const onAddCardList = cardListTitle => {
+    addCardList(cardListTitle)
+  };
 
   return (
     <ScrollView style={styles.home} automaticallyAdjustContentInsets={true}>
@@ -46,13 +54,17 @@ const Home = (props) => {
           key={1}
           user={user.name}
           title={"Action"}
-          deleteList={(props) => handleDeleteCardList(props)}
+          deleteList={(props) => onDeleteCardList(props)}
         ></CardList>
       </View>
+
+
+
+
       <Button
         size={40}
         type={"addList"}
-        onPress={() => onAddCardList()}
+      // onPress={() => onAddCardList()}
       ></Button>
 
       <View style={styles.footer}>

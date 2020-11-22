@@ -3,15 +3,24 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Input } from 'react-native-elements';
 import githubUsernameRegex from 'github-username-regex';
 
+import { useStore } from "../../Utils/Zustand";
+import shallow from 'zustand/shallow'
 
 import { Colors } from '../../styles/colors'
 import Button from '../Atoms/Button';
 
 const Login = props => {
 
+    const { users } = useStore(
+        (store) => ({
+            users: store.users
+
+        })
+    );
+
     const placeholder = "Yo, what's your name?"
     const [input, setInput] = useState("")
-    const inputRef = React.createRef();
+    const inputRef = createRef();
 
 
     const handleSubmit = () => {
@@ -47,6 +56,15 @@ const Login = props => {
             />
             <View style={styles.recents}>
                 <Text h4 style={styles.recentsTitle}>Recents</Text>
+                <View style={styles.wrapper}>
+                    {[...users.values()]
+                        .sort((a, b) => (a.timestamp > b.timestamp) ? -1 : ((b.timestamp > a.timestamp) ? 1 : 0))
+                        .slice(0, 9)
+                        .map((user, key) => {
+                            console.log("RENDERED ELEMENT", user)
+                            return (<Text style={styles.recent} key={key} onPress={() => props.logIn(user.name)}>{user.name}</Text>)
+                        })}
+                </View>
             </View>
         </View>
     )
@@ -65,14 +83,33 @@ const styles = StyleSheet.create({
     },
     recents: {
         marginTop: 32,
+        padding: 8,
         alignItems: "center",
-
     },
     recentsTitle: {
         fontFamily: 'DMMono_500Medium',
         color: Colors.white,
+        marginBottom: 16
+    },
+    wrapper: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        flexWrap: "wrap",
+    },
+    recent: {
+        fontFamily: 'DMMono_500Medium',
+        color: Colors.blue,
+        margin: 8,
     },
 
 });
 
 export default Login
+
+
+
+/**
+ * Notes:
+ *
+ * 60: Sort map by object property timestamp to render 9 most recent users first
+ */

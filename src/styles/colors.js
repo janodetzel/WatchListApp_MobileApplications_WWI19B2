@@ -9,6 +9,7 @@ export const Colors = {
 
     green: '#00ff88',
     pink: '#e52e71',
+    blue: '#0056b3',
 
     black: '#000000',
     white: '#ffffff',

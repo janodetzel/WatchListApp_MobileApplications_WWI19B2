@@ -6,55 +6,56 @@ import produce from "immer";
 import { v4 as uuidv4 } from "uuid";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export const useStore = create(
-  persist(
-    (set, get) => ({
-      currUser: [],
-      users: new Map(),
+export const useStore = create((set, get) => ({
+  currUserKey: null,
+  users: new Map(),
 
-      getUserByName: (userName) =>
-        [...get().users].find(([key, value]) => value.name == userName),
-
-      getUserByKey: (key) => get().users.get(key),
+  getUserByName: (userName) =>
+    [...get().users].find(([key, value]) => value.name == userName),
 
 
+  addUser: (userName) => {
+    set((state) =>
+      produce(state, (draft) => {
+        const userExists = draft.getUserByName(userName);
+        if (!userExists) {
+          draft.users.set(uuidv4(), {
+            timestamp: new Date(),
+            name: userName,
+            cardLists: new Map(),
+          });
+        }
+      })
+    );
+  },
 
-      addUser: (userName) => {
-        set((state) =>
-          produce(state, (draft) => {
-            const userExists = get().getUserByName(userName);
-            console.log("USER EXISTS?", userExists)
-            if (!userExists) {
-              console.log("CREATE NEW USER")
-              draft.users.set(uuidv4(), {
-                name: userName,
-                cardLists: new Map(),
-              });
-            }
-          })
-        );
-      },
+  addCardList: cardListTitle => set(state => produce(state, (draft) => {
+    draft.users.get(draft.currUserKey).cardLists.set(uuidv4(), {
+      title: cardListTitle,
+      cards: []
+    })
+  })),
 
-
-      // logIn: userName => set(state => (state.currUser = get().getUserByName(userName))),
-
-      logIn: userName => set(state => produce(state, draft => {
-        draft.currUser = get().getUserByName(userName)
-      })),
-      logOut: () => set(state => state.currUser = []),
-
-      clean: () =>
-        set((state) => {
-          state.currUser = [];
-          state.users = new Map();
-          AsyncStorage.clear();
-        }),
+  logIn: (userName) =>
+    set((state) =>
+      produce(state, (draft) => {
+        draft.currUserKey = get().getUserByName(userName)[0];
+        // Update timestamp on log in
+        draft.users.get(draft.currUserKey).timestamp = new Date();
+      })
+    ),
+  logOut: () => set((state) => (state.currUserKey = null)),
+  clean: () =>
+    set((state) => {
+      (state.currUserKey = null), (state.users = new Map());
     }),
-    {
-      name: "MovieStorage", // unique name
-      storage: AsyncStorage,
-    }
-  )
+}));
+
+export const usePersistedStore = create(
+  persist((set, get) => ({}), {
+    name: "MovieStorage", // unique name
+    storage: AsyncStorage,
+  })
 );
 
 // const usersPreview = [

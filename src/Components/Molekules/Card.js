@@ -38,9 +38,6 @@ const CardList = props => {
 
         fetchData()
 
-
-        console.log("STATE", state)
-        console.log("POSTER PATH", posterSrcSm + state.poster_path)
     }, [])
 
 
