@@ -53,9 +53,6 @@ const CardList = props => {
         return (
             <View style={styles.card}>
                 <View style={styles.movieCard}>
-                    <View style={styles.deleteButton}>
-                        <Button type="delete" onPress={() => console.log("HI")}></Button>
-                    </View>
                     <View style={styles.posterWrapper}>
                         <Image source={{ uri: posterSrcSm + state.poster_path }} style={styles.poster}
                             PlaceholderContent={<ActivityIndicator />}
@@ -94,7 +91,9 @@ const CardList = props => {
                         <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
                     </View>
                 </View>
-
+                <View style={styles.deleteButton}>
+                    <Button type="delete" onPress={props.deleteCard}></Button>
+                </View>
             </View>
         )
     }
