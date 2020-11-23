@@ -15,6 +15,7 @@ const Button = props => {
         style: [styles.icon],
         onPress: () => {
             // setIsPress(!isPress)
+            console.log("BUTTONPRESS")
             props.onPress()
         }
     }

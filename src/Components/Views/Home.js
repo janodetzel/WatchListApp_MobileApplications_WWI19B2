@@ -60,9 +60,9 @@ const Home = (props) => {
         {[...cardLists].map(([key, value]) => (
           <CardList
             key={key}
-            user={user.name}
             cardListKey={key}
             title={value.title}
+            cards={value.cards}
             deleteList={() => onDeleteCardList(key)}
           ></CardList>
         ))}

@@ -29,6 +29,7 @@ export const useStore = create((set, get) => ({
     );
   },
 
+
   addCardList: cardListTitle => set(state => produce(state, (draft) => {
     draft.users.get(draft.currUserKey).cardLists.set(uuidv4(), {
       title: cardListTitle,
@@ -41,6 +42,17 @@ export const useStore = create((set, get) => ({
   })),
 
 
+
+  addCard: (movieId, cardListKey) => set(state => produce(state, (draft) => {
+    console.log("ADDCARD", draft.users.get(draft.currUserKey).cardLists.get(cardListKey))
+    draft.users.get(draft.currUserKey).cardLists.get(cardListKey).cards.push(movieId)
+  })),
+
+  deleteCard: (movieId, cardListKey) => set(state => produce(state, (draft) => {
+    console.log("DELETECARD", draft.users.get(draft.currUserKey).cardLists.get(cardListKey))
+    const index = draft.users.get(draft.currUserKey).cardLists.get(cardListKey).cards.findIndex(movie => movie === movieId)
+    if (index !== -1) draft.users.get(draft.currUserKey).cardLists.get(cardListKey).cards.splice(index, 1)
+  })),
 
   logIn: (userName) =>
     set((state) =>

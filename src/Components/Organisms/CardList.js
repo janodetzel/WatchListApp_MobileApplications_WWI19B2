@@ -1,15 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { Text } from 'react-native-elements';
+
+import { useStore } from "../../Utils/Zustand";
+import shallow from 'zustand/shallow'
 
 import { Colors } from '../../styles/colors'
 import Button from '../Atoms/Button';
 import Card from "../Molekules/Card"
+import FindMovieOverlay from '../Views/FindMovieOverlay'
 
 
 const CardList = props => {
 
-    const cards = [27205, 155, 27205, 155, 670, 64688, 339403, 59440, 670, 64688, 339403, 59440]
+    const [findMovieOverlay, setFindMovieOverlay] = useState(false);
+
+    const toggleFindMovieOverlay = () => {
+        setFindMovieOverlay(!findMovieOverlay);
+    };
+
+    const cardsMock = [27205, 155, 27205, 155, 670, 64688, 339403, 59440, 670, 64688, 339403, 59440]
+
+    const { addCard, deleteCard } = useStore(
+        (store) => ({
+            addCard: store.addCard,
+            deleteCard: store.deleteCard
+        }), shallow
+    );
+
+    const onAddCard = (movieId) => {
+        addCard(movieId, props.cardListKey)
+    }
+
+    const onDeleteCard = (movieId) => {
+        console.log("HEHEH")
+        deleteCard(movieId, props.cardListKey)
+    }
 
     return (
         <View style={styles.cardList}>
@@ -20,11 +46,13 @@ const CardList = props => {
             <View style={styles.scrollContainer}>
                 <ScrollView
                     horizontal={true}>
-                    {cards.map((card, key) => {
-                        return <Card key={key} movieId={card}></Card>
+                    {props.cards.map((card, key) => {
+                        return <Card key={key} movieId={card} deleteCard={() => onDeleteCard(card)} new={false}></Card>
                     })}
+                    <Card new={true} addCard={() => toggleFindMovieOverlay()}></Card>
                 </ScrollView>
             </View>
+            <FindMovieOverlay submit={(props) => onAddCard(props)} isVisible={findMovieOverlay} toggleOverlay={toggleFindMovieOverlay}></FindMovieOverlay>
         </View>
     )
 }

@@ -41,54 +41,63 @@ const CardList = props => {
     }, [])
 
 
-    return (
-        <View style={styles.card}>
-            <View style={styles.deleteButton}>
-                <Button type="delete"></Button>
-            </View>
-            <View style={styles.cardWrapper}>
-                <View style={styles.posterWrapper}>
-                    <Image source={{ uri: posterSrcSm + state.poster_path }} style={styles.poster}
-                        PlaceholderContent={<ActivityIndicator />}
-                    ></Image>
-                </View>
-
-                <View style={styles.titleBar}>
-                    <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
-                    <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
-                </View>
-
-                <Text style={[styles.font, styles.tagline]}>{state.tagline}</Text>
-
-                <ReadMore
-                    wrapperStyle={[styles.overview, styles.font]}
-                    numberOfLines={2}
-                    seeMoreText={"Read more ▼"}
-                    seeLessText={"Read less ▲"}
-                    seeLessStyle={{ color: Colors.pink }}
-                    seeMoreStyle={{ color: Colors.green }}
-                    backgroundColor={Colors.secondaryDark}
-                    style={styles.font}>{state.overview}
-                </ReadMore>
-
-                <View style={[styles.genres]}>
-                    {state.genres &&
-                        state.genres.slice(0, 3).map((genre, key) => {
-                            return (
-                                <Text key={key} style={styles.genre}>{genre.name}</Text>
-                            )
-                        })
-                    }
-                </View>
-
-                <View style={styles.footer}>
-                    <View style={styles.genres}></View>
-                    <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
+    if (props.new) {
+        return (
+            <View style={styles.card}>
+                <View style={styles.emptyCard}>
+                    <Button type="addCard" size={40} onPress={props.addCard}></Button>
                 </View>
             </View>
-        </View>
+        )
+    } else {
+        return (
+            <View style={styles.card}>
+                <View style={styles.movieCard}>
+                    <View style={styles.deleteButton}>
+                        <Button type="delete" onPress={() => console.log("HI")}></Button>
+                    </View>
+                    <View style={styles.posterWrapper}>
+                        <Image source={{ uri: posterSrcSm + state.poster_path }} style={styles.poster}
+                            PlaceholderContent={<ActivityIndicator />}
+                        ></Image>
+                    </View>
 
-    )
+                    <View style={styles.titleBar}>
+                        <Text h4 style={[styles.title, styles.font]}>{state.title}</Text>
+                        <Text style={[styles.date, styles.font]}>{Moment(state.release_date).format('YYYY')}</Text>
+                    </View>
+
+                    <Text style={[styles.font, styles.tagline]}>{state.tagline}</Text>
+
+                    <ReadMore
+                        wrapperStyle={[styles.overview, styles.font]}
+                        numberOfLines={2}
+                        seeMoreText={"Read more ▼"}
+                        seeLessText={"Read less ▲"}
+                        seeLessStyle={{ color: Colors.pink }}
+                        seeMoreStyle={{ color: Colors.green }}
+                        backgroundColor={Colors.secondaryDark}
+                        style={styles.font}>{state.overview}
+                    </ReadMore>
+
+                    <View style={[styles.genres]}>
+                        {state.genres &&
+                            state.genres.slice(0, 3).map((genre, key) => {
+                                return (
+                                    <Text key={key} style={styles.genre}>{genre.name}</Text>
+                                )
+                            })
+                        }
+                    </View>
+                    <View style={styles.footer}>
+                        <View style={styles.genres}></View>
+                        <Text style={[styles.font, { color: Colors.muted }]}>{state.created.toDateString()}</Text>
+                    </View>
+                </View>
+
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -128,7 +137,11 @@ const styles = StyleSheet.create({
     pressed: {
         // marginRight: 0,
     },
-    cardWrapper: {
+    emptyCard: {
+        justifyContent: "center",
+        flex: 1
+    },
+    movieCard: {
         justifyContent: "space-between",
         flexDirection: "column",
         flex: 1,
