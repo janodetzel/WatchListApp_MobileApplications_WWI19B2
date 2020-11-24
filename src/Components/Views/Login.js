@@ -15,7 +15,7 @@ const Login = props => {
     const [input, setInput] = useState("")
     const inputRef = createRef();
 
-    const users = useStore(store => ({
+    const { users } = useStore(store => ({
         users: store.users
     }), shallow);
 
@@ -58,7 +58,6 @@ const Login = props => {
                         .sort(([aKey, aValue], [bKey, bValue]) => (aValue.timestamp > bValue.timestamp) ? -1 : ((bValue.timestamp > aValue.timestamp) ? 1 : 0))
                         .slice(0, 9)
                         .map(([key, user]) => {
-                            console.log("RENDERED ELEMENT", user)
                             return (<Text style={styles.recent} key={key} onPress={() => props.logIn(user.name)}>{user.name}</Text>)
                         })}
                 </View>

@@ -45,7 +45,6 @@ const CardList = (props) => {
   };
 
   const onDeleteCard = (cardKey) => {
-    console.log("HEHEH");
     deleteCard(cardKey, props.cardListKey);
   };
 

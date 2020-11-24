@@ -37,7 +37,6 @@ const CardList = props => {
 
             const fetchData = async () => {
                 const result = await fetch(string).then(res => res.json())
-                console.log("MOVIEDATAJSON", result)
                 setState({ ...state, ...result })
             }
 

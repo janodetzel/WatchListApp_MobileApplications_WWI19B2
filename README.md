@@ -1,8 +1,8 @@
-# MovieLibrary by JanoDetzel
+# WatchList App by JanoDetzel
 
 ## What
 
-With MovieLibrary you can organize your favourite movies in lists.
+With WatchList App you can organize your favourite movies in lists.
 
 ## How
 
@@ -13,8 +13,8 @@ With MovieLibrary you can organize your favourite movies in lists.
 
 ## Why
 
-You now can add your movies to MovieLibrary and forget about them.
-But better not forget your name.
+You now can add your movies to WatchList App and forget about them.
+But better not forget your name to log in.
 
 ---
 
@@ -25,3 +25,7 @@ In the project directory, you can run:
 ### `yarn start`
 
 Runs the app in the expo development mode.
+
+### `yarn eject`
+
+Eject expo.
