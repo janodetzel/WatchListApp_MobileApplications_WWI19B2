@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 
-import { useObjStore } from "../../Utils/Zustand";
+import { useStore } from "../../Utils/Zustand";
 import shallow from 'zustand/shallow'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { Colors } from "../../styles/colors";
 import CardList from "../Organisms/CardList";
@@ -13,16 +13,10 @@ import Button from "../Atoms/Button";
 import AddCardListInput from "../Molekules/AddCardListInput";
 
 const Home = (props) => {
-
   const [addCardListInput, setAddCardListInput] = useState(false);
 
-  const toggleCardListInput = () => {
-    setAddCardListInput(!addCardListInput)
-  }
-
-  const { store, user, cardLists, addCardList, deleteCardList } = useObjStore(
+  const { user, cardLists, addCardList, deleteCardList } = useStore(
     (store) => ({
-      store: store,
       user: store.users[props.userKey],
       cardLists: store.users[props.userKey].cardLists,
       addCardList: store.addCardList,
@@ -30,24 +24,21 @@ const Home = (props) => {
     }), shallow
   );
 
-  useEffect(() => {
-    console.log("HOME USER KEY", props.userKey)
-    console.log("HOME USER OBJECT", store.users)
-    console.log("CARDLISTS", cardLists)
-  }, [cardLists])
-
-
-  const onDeleteCardList = cardListKey => {
-    console.log("ON DELETE CARD LIST", cardListKey)
-    deleteCardList(cardListKey)
-  };
+  const toggleCardListInput = () => {
+    setAddCardListInput(!addCardListInput)
+  }
 
   const onAddCardList = cardListTitle => {
     addCardList(cardListTitle)
   };
 
+  const onDeleteCardList = cardListKey => {
+    deleteCardList(cardListKey)
+  };
+
   return (
     <KeyboardAwareScrollView style={styles.home} automaticallyAdjustContentInsets={true} enableOnAndroid={true}>
+
       <View style={styles.titleContainer}>
         <Text h1 h1Style={styles.greeting}>
           Hi, {user.name === "Preview" ? "There" : user.name}!
@@ -56,6 +47,7 @@ const Home = (props) => {
           Create your own MovieLibrary
         </Text>
       </View>
+
       <View style={styles.cardListContainer}>
         {Object.entries(cardLists).map(([key, value]) => (
           <CardList
@@ -66,9 +58,10 @@ const Home = (props) => {
             deleteList={() => onDeleteCardList(key)}
           ></CardList>
         ))}
-
       </View>
+
       <AddCardListInput visible={addCardListInput} hide={() => setAddCardListInput(false)} addCardList={(props) => onAddCardList(props)}></AddCardListInput>
+
       <Button
         size={40}
         type={"addList"}
@@ -81,6 +74,7 @@ const Home = (props) => {
           Log Out
         </Text>
       </View>
+
     </KeyboardAwareScrollView>
   );
 };

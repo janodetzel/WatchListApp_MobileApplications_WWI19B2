@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { Text } from "react-native-elements";
 
-import { useObjStore } from "../../Utils/Zustand";
+import { useStore } from "../../Utils/Zustand";
 import shallow from "zustand/shallow";
 
 import { Colors } from "../../styles/colors";
@@ -32,7 +32,7 @@ const CardList = (props) => {
     59440,
   ];
 
-  const { addCard, deleteCard } = useObjStore(
+  const { addCard, deleteCard } = useStore(
     (store) => ({
       addCard: store.addCard,
       deleteCard: store.deleteCard,
@@ -60,7 +60,6 @@ const CardList = (props) => {
       <View style={styles.scrollContainer}>
         <ScrollView horizontal={true}>
           {Object.entries(props.cards).map(([key, card]) => {
-            console.log("CARDRENDER", card)
             return (
               <Card
                 key={key}

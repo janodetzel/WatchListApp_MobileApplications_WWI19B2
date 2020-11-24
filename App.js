@@ -5,7 +5,7 @@ import { AppLoading } from "expo";
 import { StatusBar } from "expo-status-bar";
 import * as ScreenOrientation from "expo-screen-orientation";
 
-import { useObjStore } from "./src/Utils/Zustand";
+import { useStore } from "./src/Utils/Zustand";
 import shallow from "zustand/shallow";
 import { enableMapSet } from "immer";
 
@@ -35,7 +35,7 @@ export default function App() {
     DMMono_500Medium,
   });
 
-  const { userKey, addUser, logIn, logOut } = useObjStore(
+  const { userKey, addUser, logIn, logOut } = useStore(
     (store) => ({
       userKey: store.currUserKey,
       addUser: store.addUser,
@@ -59,12 +59,15 @@ export default function App() {
   } else {
     return (
       <SafeAreaView style={styles.app}>
+
         <StatusBar style="auto" />
+
         {userKey ? (
           <Home userKey={userKey} logOut={onLogOut} />
         ) : (
             <Login logIn={(cred) => onLogIn(cred)}></Login>
           )}
+
       </SafeAreaView>
     );
   }

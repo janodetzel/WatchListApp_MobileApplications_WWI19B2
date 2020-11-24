@@ -1,47 +1,42 @@
 import React, { useState, createRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Input } from 'react-native-elements';
-import githubUsernameRegex from 'github-username-regex';
 
-import { useObjStore } from "../../Utils/Zustand";
+import { useStore } from "../../Utils/Zustand";
 import shallow from 'zustand/shallow'
+
+import githubUsernameRegex from 'github-username-regex';
 
 import { Colors } from '../../styles/colors'
 import Button from '../Atoms/Button';
 
 const Login = props => {
-
-    const { users } = useObjStore(
-        (store) => ({
-            users: store.users
-
-        })
-    );
-
     const placeholder = "Yo, what's your name?"
     const [input, setInput] = useState("")
     const inputRef = createRef();
 
+    const users = useStore(store => ({
+        users: store.users
+    }), shallow);
 
-    const handleSubmit = () => {
-        if (input && validInput()) {
+    const onSubmit = () => {
+        if (input && validInput) {
             props.logIn(input)
         } else {
             inputRef.current.shake()
+            resetInput()
         }
-        resetInput()
     }
+
+    const validInput = githubUsernameRegex.test(input);
 
     const resetInput = () => {
         inputRef.current.clear()
     }
 
-    const validInput = () => {
-        return githubUsernameRegex.test(input);
-    }
-
     return (
         <View style={styles.login}>
+
             <Input
                 ref={inputRef}
                 style={styles.input}
@@ -49,13 +44,15 @@ const Login = props => {
                 textContentType="username"
                 enablesReturnKeyAutomatically={true}
                 placeholder={placeholder}
-                rightIcon={<Button type="navigation" onPress={() => handleSubmit()} />}
+                rightIcon={<Button type="navigation" onPress={() => onSubmit()} />}
                 value={input}
-                onSubmitEditing={() => handleSubmit()}
+                onSubmitEditing={() => onSubmit()}
                 onChangeText={text => setInput(text)}
             />
+
             <View style={styles.recents}>
                 <Text h4 style={styles.recentsTitle}>Recents</Text>
+
                 <View style={styles.wrapper}>
                     {Object.entries(users)
                         .sort(([aKey, aValue], [bKey, bValue]) => (aValue.timestamp > bValue.timestamp) ? -1 : ((bValue.timestamp > aValue.timestamp) ? 1 : 0))
@@ -65,6 +62,7 @@ const Login = props => {
                             return (<Text style={styles.recent} key={key} onPress={() => props.logIn(user.name)}>{user.name}</Text>)
                         })}
                 </View>
+
             </View>
         </View>
     )
