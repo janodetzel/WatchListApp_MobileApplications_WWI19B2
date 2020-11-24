@@ -35,15 +35,17 @@ export default function App() {
     DMMono_500Medium,
   });
 
-  const { userKey, addUser, logIn, logOut } = useStore(
+  const { userKey, addUser, deleteUser, logIn, logOut } = useStore(
     (store) => ({
       userKey: store.currUserKey,
       addUser: store.addUser,
+      deleteUser: store.deleteUser,
       logIn: store.logIn,
       logOut: store.logOut,
     }),
     shallow
   );
+
 
   const onLogIn = cred => {
     addUser(cred);
@@ -65,7 +67,7 @@ export default function App() {
         {userKey ? (
           <Home userKey={userKey} logOut={onLogOut} />
         ) : (
-            <Login logIn={(cred) => onLogIn(cred)}></Login>
+            <Login logIn={(cred) => onLogIn(cred)} deleteUser={(userName) => deleteUser(userName)}></Login>
           )}
 
       </SafeAreaView>

@@ -40,7 +40,7 @@ export const useStore = create((set, get) => ({
 
   deleteUser: userName => set(state => produce(state, draft => {
     const userKey = draft.getUserByName(userName);
-    delete draft[userKey]
+    delete draft.users[userKey]
   })),
 
 

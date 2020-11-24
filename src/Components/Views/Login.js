@@ -15,9 +15,12 @@ const Login = props => {
     const [input, setInput] = useState("")
     const inputRef = createRef();
 
+
     const { users } = useStore(store => ({
         users: store.users
     }), shallow);
+
+    const [userToDelete, setUserToDelete] = useState()
 
     const onSubmit = () => {
         if (input && validInput) {
@@ -28,11 +31,29 @@ const Login = props => {
         }
     }
 
+    const onDeleteUser = userName => {
+        props.deleteUser(userName)
+        toggleDeleteText()
+    }
+
     const validInput = githubUsernameRegex.test(input);
 
     const resetInput = () => {
         inputRef.current.clear()
     }
+
+    const toggleDeleteText = userName => {
+        console.log("USERNAME TOGGLE", userName)
+        if (userToDelete) {
+            setUserToDelete()
+        } else {
+            setUserToDelete(userName)
+        }
+    }
+
+    const renderDeleteText = userName => (
+        userToDelete && <Text style={styles.delete} onPress={() => onDeleteUser(userToDelete)}>Press here to erase {userToDelete}</Text>
+    )
 
     return (
         <View style={styles.login}>
@@ -58,9 +79,13 @@ const Login = props => {
                         .sort(([aKey, aValue], [bKey, bValue]) => (aValue.timestamp > bValue.timestamp) ? -1 : ((bValue.timestamp > aValue.timestamp) ? 1 : 0))
                         .slice(0, 9)
                         .map(([key, user]) => {
-                            return (<Text style={styles.recent} key={key} onPress={() => props.logIn(user.name)}>{user.name}</Text>)
+                            return (
+                                <Text style={styles.recent} key={key} onPress={() => props.logIn(user.name)} onLongPress={() => toggleDeleteText(user.name)}>{user.name}</Text>
+                            )
                         })}
                 </View>
+
+                {renderDeleteText()}
 
             </View>
         </View>
@@ -98,6 +123,14 @@ const styles = StyleSheet.create({
         color: Colors.blue,
         margin: 8,
     },
+    delete: {
+        flex: 1,
+        position: "absolute",
+        fontFamily: 'DMMono_500Medium',
+        color: Colors.pink,
+        bottom: -100,
+
+    }
 
 });
 

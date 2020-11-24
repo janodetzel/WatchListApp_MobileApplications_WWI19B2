@@ -17,21 +17,6 @@ const CardList = (props) => {
     setFindMovieOverlay(!findMovieOverlay);
   };
 
-  const cardsMock = [
-    27205,
-    155,
-    27205,
-    155,
-    670,
-    64688,
-    339403,
-    59440,
-    670,
-    64688,
-    339403,
-    59440,
-  ];
-
   const { addCard, deleteCard } = useStore(
     (store) => ({
       addCard: store.addCard,
