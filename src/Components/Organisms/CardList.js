@@ -1,86 +1,109 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import { Text } from 'react-native-elements';
+import React, { useState } from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
+import { Text } from "react-native-elements";
 
 import { useStore } from "../../Utils/Zustand";
-import shallow from 'zustand/shallow'
+import shallow from "zustand/shallow";
 
-import { Colors } from '../../styles/colors'
-import Button from '../Atoms/Button';
-import Card from "../Molekules/Card"
-import FindMovieOverlay from '../Views/FindMovieOverlay'
+import { Colors } from "../../styles/colors";
+import Button from "../Atoms/Button";
+import Card from "../Molekules/Card";
+import FindMovieOverlay from "../Views/FindMovieOverlay";
 
+const CardList = (props) => {
+  const [findMovieOverlay, setFindMovieOverlay] = useState(false);
 
-const CardList = props => {
+  const toggleFindMovieOverlay = () => {
+    setFindMovieOverlay(!findMovieOverlay);
+  };
 
-    const [findMovieOverlay, setFindMovieOverlay] = useState(false);
+  const cardsMock = [
+    27205,
+    155,
+    27205,
+    155,
+    670,
+    64688,
+    339403,
+    59440,
+    670,
+    64688,
+    339403,
+    59440,
+  ];
 
-    const toggleFindMovieOverlay = () => {
-        setFindMovieOverlay(!findMovieOverlay);
-    };
+  const { addCard, deleteCard } = useStore(
+    (store) => ({
+      addCard: store.addCard,
+      deleteCard: store.deleteCard,
+    }),
+    shallow
+  );
 
-    const cardsMock = [27205, 155, 27205, 155, 670, 64688, 339403, 59440, 670, 64688, 339403, 59440]
+  const onAddCard = (movieId) => {
+    addCard(movieId, props.cardListKey);
+  };
 
-    const { addCard, deleteCard } = useStore(
-        (store) => ({
-            addCard: store.addCard,
-            deleteCard: store.deleteCard
-        }), shallow
-    );
+  const onDeleteCard = (movieId) => {
+    console.log("HEHEH");
+    deleteCard(movieId, props.cardListKey);
+  };
 
-    const onAddCard = (movieId) => {
-        addCard(movieId, props.cardListKey)
-    }
-
-    const onDeleteCard = (movieId) => {
-        console.log("HEHEH")
-        deleteCard(movieId, props.cardListKey)
-    }
-
-    return (
-        <View style={styles.cardList}>
-            <View style={styles.header}>
-                <Text h1 style={styles.title}>{props.title}</Text>
-                <Button type={"delete"} onPress={() => props.deleteList()}></Button>
-            </View>
-            <View style={styles.scrollContainer}>
-                <ScrollView
-                    horizontal={true}>
-                    {props.cards.map((card, key) => {
-                        return <Card key={key} movieId={card} deleteCard={() => onDeleteCard(card)} new={false}></Card>
-                    })}
-                    <Card new={true} addCard={() => toggleFindMovieOverlay()}></Card>
-                </ScrollView>
-            </View>
-            <FindMovieOverlay submit={(props) => onAddCard(props)} isVisible={findMovieOverlay} toggleOverlay={toggleFindMovieOverlay}></FindMovieOverlay>
-        </View>
-    )
-}
+  return (
+    <View style={styles.cardList}>
+      <View style={styles.header}>
+        <Text h1 style={styles.title}>
+          {props.title}
+        </Text>
+        <Button type={"delete"} onPress={() => props.deleteList()}></Button>
+      </View>
+      <View style={styles.scrollContainer}>
+        <ScrollView horizontal={true}>
+          {props.cards.map((card, key) => {
+            return (
+              <Card
+                key={key}
+                movieId={card}
+                deleteCard={() => onDeleteCard(card)}
+                new={false}
+              ></Card>
+            );
+          })}
+          <Card new={true} addCard={() => toggleFindMovieOverlay()}></Card>
+        </ScrollView>
+      </View>
+      <FindMovieOverlay
+        submit={(props) => onAddCard(props)}
+        isVisible={findMovieOverlay}
+        toggleOverlay={toggleFindMovieOverlay}
+      ></FindMovieOverlay>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    cardList: {
-        backgroundColor: Colors.primaryDark,
-        marginBottom: 32,
-    },
-    header: {
-        color: "#fff",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginHorizontal: 16,
-    },
-    title: {
-        fontFamily: 'DMMono_500Medium',
-        color: Colors.white,
-    },
-    paragraph: {
-        fontFamily: 'DMMono_500Medium',
-        color: Colors.white,
-    },
-    scrollContainer: {
-        flex: 1
-    }
-
+  cardList: {
+    backgroundColor: Colors.primaryDark,
+    marginBottom: 32,
+  },
+  header: {
+    color: "#fff",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 16,
+  },
+  title: {
+    fontFamily: "DMMono_500Medium",
+    color: Colors.white,
+  },
+  paragraph: {
+    fontFamily: "DMMono_500Medium",
+    color: Colors.white,
+  },
+  scrollContainer: {
+    flex: 1,
+  },
 });
 
-export default CardList
+export default CardList;

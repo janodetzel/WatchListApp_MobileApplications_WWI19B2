@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, text } from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
 import { AppLoading } from "expo";
 import {
   useFonts,
@@ -14,13 +15,20 @@ import { Colors } from "./src/styles/colors";
 import Login from "./src/Components/Views/Login";
 
 import { useStore } from "./src/Utils/Zustand";
-import shallow from 'zustand/shallow'
+import shallow from "zustand/shallow";
 
 import { enableMapSet } from "immer";
 
-
 export default function App() {
   enableMapSet();
+
+  async function changeScreenOrientation() {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT_UP
+    );
+  }
+
+  changeScreenOrientation();
 
   let [fontsLoaded] = useFonts({
     DMMono_500Medium,
@@ -33,25 +41,25 @@ export default function App() {
       logIn: store.logIn,
       logOut: store.logOut,
       store: store,
-    }), shallow
+    }),
+    shallow
   );
 
   const [auth, setAuth] = useState(false);
 
-
   useEffect(() => {
-    console.log("CURRENT STORAGE", store)
-  }, [])
+    console.log("CURRENT STORAGE", store);
+  }, []);
 
   const onLogIn = (cred) => {
-    addUser(cred)
+    addUser(cred);
     logIn(cred);
-    setAuth(true)
+    setAuth(true);
   };
 
   const onLogOut = () => {
     logOut();
-    setAuth(false)
+    setAuth(false);
   };
 
   if (!fontsLoaded) {
@@ -63,8 +71,8 @@ export default function App() {
         {userKey ? (
           <Home userKey={userKey} logOut={() => onLogOut()} />
         ) : (
-            <Login logIn={(cred) => onLogIn(cred)}></Login>
-          )}
+          <Login logIn={(cred) => onLogIn(cred)}></Login>
+        )}
       </SafeAreaView>
     );
   }
