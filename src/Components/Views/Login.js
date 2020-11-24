@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Input } from 'react-native-elements';
 import githubUsernameRegex from 'github-username-regex';
 
-import { useStore } from "../../Utils/Zustand";
+import { useObjStore } from "../../Utils/Zustand";
 import shallow from 'zustand/shallow'
 
 import { Colors } from '../../styles/colors'
@@ -11,7 +11,7 @@ import Button from '../Atoms/Button';
 
 const Login = props => {
 
-    const { users } = useStore(
+    const { users } = useObjStore(
         (store) => ({
             users: store.users
 
@@ -57,10 +57,10 @@ const Login = props => {
             <View style={styles.recents}>
                 <Text h4 style={styles.recentsTitle}>Recents</Text>
                 <View style={styles.wrapper}>
-                    {[...users.values()]
-                        .sort((a, b) => (a.timestamp > b.timestamp) ? -1 : ((b.timestamp > a.timestamp) ? 1 : 0))
+                    {Object.entries(users)
+                        .sort(([aKey, aValue], [bKey, bValue]) => (aValue.timestamp > bValue.timestamp) ? -1 : ((bValue.timestamp > aValue.timestamp) ? 1 : 0))
                         .slice(0, 9)
-                        .map((user, key) => {
+                        .map(([key, user]) => {
                             console.log("RENDERED ELEMENT", user)
                             return (<Text style={styles.recent} key={key} onPress={() => props.logIn(user.name)}>{user.name}</Text>)
                         })}

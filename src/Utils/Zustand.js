@@ -6,204 +6,66 @@ import produce from "immer";
 import { v4 as uuidv4 } from "uuid";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-export const useTestStore = create((set, get) => ({
+
+export const useObjStore = create((set, get) => ({
   currUserKey: null,
-  users: new Map(),
+  users: {},
 
-  getUserByName: (userName) =>
-    [...get().users].find(([key, value]) => value.name == userName),
+  getUserByName: userName => Object.keys(get().users).find(key => get().users[key].name.toUpperCase() === userName.toUpperCase()),
 
-  addUser: (userName) => {
-    set((state) =>
-      produce(state, (draft) => {
-        const userExists = draft.getUserByName(userName);
-        if (!userExists) {
-          draft.users.set(uuidv4(), {
-            timestamp: new Date(),
-            name: userName,
-            cardLists: new Map(),
-          });
-        }
-      })
-    );
-  },
+  addUser: userName => set(state => produce(state, draft => {
+    const userExists = draft.getUserByName(userName);
+    if (!userExists) {
+      draft.users[uuidv4()] = {
+        timestamp: new Date(),
+        name: userName,
+        cardLists: {},
+      }
+    }
+  })),
 
-  addCardList: (cardListTitle) =>
-    set((state) =>
-      produce(state, (draft) => {
-        draft.users.get(draft.currUserKey).cardLists.set(uuidv4(), {
-          title: cardListTitle,
-          cards: [],
-        });
-      })
-    ),
+  deleteUser: userName => set(state => produce(state, draft => {
+    const userKey = draft.getUserByName(userName);
+    delete draft[userKey]
+  })),
 
-  deleteCardList: (cardListKey) =>
-    set((state) =>
-      produce(state, (draft) => {
-        draft.users.get(draft.currUserKey).cardLists.delete(cardListKey);
-      })
-    ),
 
-  addCard: (movieId, cardListKey) =>
-    set((state) =>
-      produce(state, (draft) => {
-        console.log(
-          "ADDCARD",
-          draft.users.get(draft.currUserKey).cardLists.get(cardListKey)
-        );
-        draft.users
-          .get(draft.currUserKey)
-          .cardLists.get(cardListKey)
-          .cards.push(movieId);
-      })
-    ),
+  addCardList: cardListTitle => set(state => produce(state, draft => {
+    draft.users[draft.currUserKey].cardLists[uuidv4()] = {
+      title: cardListTitle,
+      cards: {},
+    }
+  })),
 
-  deleteCard: (movieId, cardListKey) =>
-    set((state) =>
-      produce(state, (draft) => {
-        console.log(
-          "DELETECARD",
-          draft.users.get(draft.currUserKey).cardLists.get(cardListKey)
-        );
-        const index = draft.users
-          .get(draft.currUserKey)
-          .cardLists.get(cardListKey)
-          .cards.findIndex((movie) => movie === movieId);
-        if (index !== -1)
-          draft.users
-            .get(draft.currUserKey)
-            .cardLists.get(cardListKey)
-            .cards.splice(index, 1);
-      })
-    ),
+  deleteCardList: cardListKey => set(state => produce(state, draft => {
+    delete draft.users[draft.currUserKey].cardLists[cardListKey];
+  })),
 
-  logIn: (userName) =>
-    set((state) =>
-      produce(state, (draft) => {
-        draft.currUserKey = get().getUserByName(userName)[0];
-        // Update timestamp on log in
-        draft.users.get(draft.currUserKey).timestamp = new Date();
-      })
-    ),
+  addCard: (cardDetails, cardListKey) => set(state => produce(state, draft => {
+    draft.users[draft.currUserKey].cardLists[cardListKey].cards[uuidv4()] = { details: cardDetails }
+  })),
+
+  deleteCard: (cardKey, cardListKey) => set(state => produce(state, draft => {
+    delete draft.users[draft.currUserKey].cardLists[cardListKey].cards[cardKey]
+  })),
+
+  logIn: userName => set((state) => produce(state, draft => {
+    draft.currUserKey = draft.getUserByName(userName);
+
+    // Update timestamp on log in
+    draft.users[draft.currUserKey].timestamp = new Date();
+  })
+  ),
   logOut: () => set((state) => (state.currUserKey = null)),
-  clean: () =>
-    set((state) => {
-      (state.currUserKey = null), (state.users = new Map());
-    }),
+
 }));
 
-export const useStore = create(
+export const usePersistedStore = create(
   persist(
-    (set, get) => ({
-      currUserKey: null,
-      users: new Map(),
-
-      getUserByName: (userName) =>
-        [...get().users].find(([key, value]) => value.name == userName),
-
-      addUser: (userName) => {
-        set((state) =>
-          produce(state, (draft) => {
-            const userExists = draft.getUserByName(userName);
-            if (!userExists) {
-              draft.users.set(uuidv4(), {
-                timestamp: new Date(),
-                name: userName,
-                cardLists: new Map(),
-              });
-            }
-          })
-        );
-      },
-
-      addCardList: (cardListTitle) =>
-        set((state) =>
-          produce(state, (draft) => {
-            draft.users.get(draft.currUserKey).cardLists.set(uuidv4(), {
-              title: cardListTitle,
-              cards: [],
-            });
-          })
-        ),
-
-      deleteCardList: (cardListKey) =>
-        set((state) =>
-          produce(state, (draft) => {
-            draft.users.get(draft.currUserKey).cardLists.delete(cardListKey);
-          })
-        ),
-
-      addCard: (movieId, cardListKey) =>
-        set((state) =>
-          produce(state, (draft) => {
-            console.log(
-              "ADDCARD",
-              draft.users.get(draft.currUserKey).cardLists.get(cardListKey)
-            );
-            draft.users
-              .get(draft.currUserKey)
-              .cardLists.get(cardListKey)
-              .cards.push(movieId);
-          })
-        ),
-
-      deleteCard: (movieId, cardListKey) =>
-        set((state) =>
-          produce(state, (draft) => {
-            console.log(
-              "DELETECARD",
-              draft.users.get(draft.currUserKey).cardLists.get(cardListKey)
-            );
-            const index = draft.users
-              .get(draft.currUserKey)
-              .cardLists.get(cardListKey)
-              .cards.findIndex((movie) => movie === movieId);
-            if (index !== -1)
-              draft.users
-                .get(draft.currUserKey)
-                .cardLists.get(cardListKey)
-                .cards.splice(index, 1);
-          })
-        ),
-
-      logIn: (userName) =>
-        set((state) =>
-          produce(state, (draft) => {
-            draft.currUserKey = get().getUserByName(userName)[0];
-            // Update timestamp on log in
-            draft.users.get(draft.currUserKey).timestamp = new Date();
-          })
-        ),
-      logOut: () => set((state) => (state.currUserKey = null)),
-      clean: () =>
-        set((state) => {
-          (state.currUserKey = null), (state.users = new Map());
-        }),
-    }),
+    (set, get) => ({}),
     {
       name: "MovieStorage", // unique name
       storage: AsyncStorage,
     }
   )
 );
-
-// const usersPreview = [
-//     {
-//       name: "Preview",
-//       cardLists: [
-//         {
-//           title: "Action",
-//           cards: [27205, 155, 670, 64688, 339403, 59440],
-//         },
-//         {
-//           title: "Drama",
-//           cards: [550, 1422, 157336, 13, 641],
-//         },
-//         {
-//           title: "Comedy",
-//           cards: [207, 105, 546554, 14160, 40807, 740985],
-//         },
-//       ],
-//     },
-//   ],

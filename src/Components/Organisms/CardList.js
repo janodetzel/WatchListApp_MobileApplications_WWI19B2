@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { Text } from "react-native-elements";
 
-import { useStore } from "../../Utils/Zustand";
+import { useObjStore } from "../../Utils/Zustand";
 import shallow from "zustand/shallow";
 
 import { Colors } from "../../styles/colors";
@@ -32,7 +32,7 @@ const CardList = (props) => {
     59440,
   ];
 
-  const { addCard, deleteCard } = useStore(
+  const { addCard, deleteCard } = useObjStore(
     (store) => ({
       addCard: store.addCard,
       deleteCard: store.deleteCard,
@@ -40,13 +40,13 @@ const CardList = (props) => {
     shallow
   );
 
-  const onAddCard = (movieId) => {
-    addCard(movieId, props.cardListKey);
+  const onAddCard = (cardDetails) => {
+    addCard(cardDetails, props.cardListKey);
   };
 
-  const onDeleteCard = (movieId) => {
+  const onDeleteCard = (cardKey) => {
     console.log("HEHEH");
-    deleteCard(movieId, props.cardListKey);
+    deleteCard(cardKey, props.cardListKey);
   };
 
   return (
@@ -59,12 +59,13 @@ const CardList = (props) => {
       </View>
       <View style={styles.scrollContainer}>
         <ScrollView horizontal={true}>
-          {props.cards.map((card, key) => {
+          {Object.entries(props.cards).map(([key, card]) => {
+            console.log("CARDRENDER", card)
             return (
               <Card
                 key={key}
-                movieId={card}
-                deleteCard={() => onDeleteCard(card)}
+                cardDetails={card.details}
+                deleteCard={() => onDeleteCard(key)}
                 new={false}
               ></Card>
             );

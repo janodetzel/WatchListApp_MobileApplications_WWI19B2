@@ -44,9 +44,9 @@ const FindMovieOverlay = (props) => {
     }
   }, [input]);
 
-  const onSubmit = (movieId) => {
-    if (movieId) {
-      props.submit(movieId);
+  const onSubmit = (cardDetails) => {
+    if (cardDetails) {
+      props.submit(cardDetails);
       props.toggleOverlay();
       resetInput();
     } else {
@@ -65,7 +65,7 @@ const FindMovieOverlay = (props) => {
         return (
           <FindMovieResult
             key={key}
-            onPress={() => onSubmit(result.id)}
+            onPress={() => onSubmit(result)}
             title={result.title}
             releaseDate={result.release_date}
             overview={result.overview}

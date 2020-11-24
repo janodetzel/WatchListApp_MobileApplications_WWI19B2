@@ -24,19 +24,25 @@ const CardList = props => {
 
 
     const [state, setState] = useState({
+        ...props.cardDetails,
         created: new Date(),
     })
 
     useEffect(() => {
-        const key = REACT_APP_MOVIE_DB_API_TOKEN
-        const string = "https://api.themoviedb.org/3/movie/" + props.movieId + "?api_key=" + key
 
-        const fetchData = async () => {
-            const result = await fetch(string).then(res => res.json())
-            setState({ ...state, ...result })
+        if (state.id) {
+            const key = REACT_APP_MOVIE_DB_API_TOKEN
+            const string = "https://api.themoviedb.org/3/movie/" + props.cardDetails.id + "?api_key=" + key
+
+
+            const fetchData = async () => {
+                const result = await fetch(string).then(res => res.json())
+                console.log("MOVIEDATAJSON", result)
+                setState({ ...state, ...result })
+            }
+
+            fetchData()
         }
-
-        fetchData()
 
     }, [])
 

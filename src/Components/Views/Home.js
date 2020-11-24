@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import { Input, Text } from "react-native-elements";
+import { Text } from "react-native-elements";
 
-import { useStore } from "../../Utils/Zustand";
+import { useObjStore } from "../../Utils/Zustand";
 import shallow from 'zustand/shallow'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -20,11 +20,11 @@ const Home = (props) => {
     setAddCardListInput(!addCardListInput)
   }
 
-  const { store, user, cardLists, addCardList, deleteCardList } = useStore(
+  const { store, user, cardLists, addCardList, deleteCardList } = useObjStore(
     (store) => ({
       store: store,
-      user: store.users.get(props.userKey),
-      cardLists: store.users.get(props.userKey).cardLists,
+      user: store.users[props.userKey],
+      cardLists: store.users[props.userKey].cardLists,
       addCardList: store.addCardList,
       deleteCardList: store.deleteCardList
     }), shallow
@@ -57,7 +57,7 @@ const Home = (props) => {
         </Text>
       </View>
       <View style={styles.cardListContainer}>
-        {[...cardLists].map(([key, value]) => (
+        {Object.entries(cardLists).map(([key, value]) => (
           <CardList
             key={key}
             cardListKey={key}

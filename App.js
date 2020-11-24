@@ -1,8 +1,18 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView, text } from "react-native";
-import * as ScreenOrientation from "expo-screen-orientation";
+
 import { AppLoading } from "expo";
+import { StatusBar } from "expo-status-bar";
+import * as ScreenOrientation from "expo-screen-orientation";
+
+import { useObjStore } from "./src/Utils/Zustand";
+import shallow from "zustand/shallow";
+import { enableMapSet } from "immer";
+
+import Home from "./src/Components/Views/Home";
+import { Colors } from "./src/styles/colors";
+import Login from "./src/Components/Views/Login";
+
 import {
   useFonts,
   DMMono_300Light,
@@ -10,56 +20,38 @@ import {
   DMMono_500Medium,
 } from "@expo-google-fonts/dm-mono";
 
-import Home from "./src/Components/Views/Home";
-import { Colors } from "./src/styles/colors";
-import Login from "./src/Components/Views/Login";
+async function changeScreenOrientation() {
+  await ScreenOrientation.lockAsync(
+    ScreenOrientation.OrientationLock.PORTRAIT_UP
+  );
+}
 
-import { useStore } from "./src/Utils/Zustand";
-import shallow from "zustand/shallow";
-
-import { enableMapSet } from "immer";
 
 export default function App() {
   enableMapSet();
-
-  async function changeScreenOrientation() {
-    await ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.PORTRAIT_UP
-    );
-  }
-
   changeScreenOrientation();
 
   let [fontsLoaded] = useFonts({
     DMMono_500Medium,
   });
 
-  const { userKey, addUser, logIn, logOut, store } = useStore(
+  const { userKey, addUser, logIn, logOut } = useObjStore(
     (store) => ({
       userKey: store.currUserKey,
       addUser: store.addUser,
       logIn: store.logIn,
       logOut: store.logOut,
-      store: store,
     }),
     shallow
   );
 
-  const [auth, setAuth] = useState(false);
-
-  useEffect(() => {
-    console.log("CURRENT STORAGE", store);
-  }, []);
-
-  const onLogIn = (cred) => {
+  const onLogIn = cred => {
     addUser(cred);
     logIn(cred);
-    setAuth(true);
   };
 
   const onLogOut = () => {
     logOut();
-    setAuth(false);
   };
 
   if (!fontsLoaded) {
@@ -69,10 +61,10 @@ export default function App() {
       <SafeAreaView style={styles.app}>
         <StatusBar style="auto" />
         {userKey ? (
-          <Home userKey={userKey} logOut={() => onLogOut()} />
+          <Home userKey={userKey} logOut={onLogOut} />
         ) : (
-          <Login logIn={(cred) => onLogIn(cred)}></Login>
-        )}
+            <Login logIn={(cred) => onLogIn(cred)}></Login>
+          )}
       </SafeAreaView>
     );
   }
