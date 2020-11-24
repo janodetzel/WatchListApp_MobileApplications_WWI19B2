@@ -35,13 +35,14 @@ export default function App() {
     DMMono_500Medium,
   });
 
-  const { userKey, addUser, deleteUser, logIn, logOut } = useStore(
+  const { userKey, addUser, deleteUser, logIn, logOut, store } = useStore(
     (store) => ({
       userKey: store.currUserKey,
       addUser: store.addUser,
       deleteUser: store.deleteUser,
       logIn: store.logIn,
       logOut: store.logOut,
+      store: store
     }),
     shallow
   );
@@ -54,6 +55,7 @@ export default function App() {
 
   const onLogOut = () => {
     logOut();
+    console.log("STORE", store)
   };
 
   if (!fontsLoaded) {
