@@ -43,7 +43,6 @@ const Login = props => {
     }
 
     const toggleDeleteText = userName => {
-        console.log("USERNAME TOGGLE", userName)
         if (userToDelete) {
             setUserToDelete()
         } else {
@@ -51,7 +50,7 @@ const Login = props => {
         }
     }
 
-    const renderDeleteText = userName => (
+    const renderDeleteText = () => (
         userToDelete && <Text style={styles.delete} onPress={() => onDeleteUser(userToDelete)}>Press here to erase {userToDelete}</Text>
     )
 

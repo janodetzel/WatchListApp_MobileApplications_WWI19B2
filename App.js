@@ -49,13 +49,14 @@ export default function App() {
 
 
   const onLogIn = cred => {
+    console.log("LogIn Store", store)
     addUser(cred);
     logIn(cred);
   };
 
   const onLogOut = () => {
     logOut();
-    console.log("STORE", store)
+    console.log("LogOut Store", store)
   };
 
   if (!fontsLoaded) {

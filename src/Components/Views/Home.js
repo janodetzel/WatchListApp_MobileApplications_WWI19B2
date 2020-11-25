@@ -44,7 +44,7 @@ const Home = (props) => {
           Hi, {user.name === "Preview" ? "There" : user.name}!
         </Text>
         <Text h4 h4Style={styles.paragraph}>
-          Create your own MovieLibrary
+          Create your WatchList
         </Text>
       </View>
 
@@ -82,6 +82,7 @@ const Home = (props) => {
 const styles = StyleSheet.create({
   home: {
     backgroundColor: Colors.primaryDark,
+    width: '100%'
   },
   titleContainer: {
     color: "#fff",
@@ -101,11 +102,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     margin: 32,
   },
-
   creator: {
-    color: Colors.white,
+    fontFamily: "DMMono_500Medium",
+    color: Colors.muted,
   },
   logout: {
+    fontFamily: "DMMono_500Medium",
     color: Colors.blue,
   },
 });

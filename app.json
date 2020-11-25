@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "WatchList",
-    "slug": "WatchList",
+    "name": "WatchList App",
+    "slug": "watchlist-app",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true
