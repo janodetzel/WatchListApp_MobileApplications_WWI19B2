@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 
 import { useStore } from "../../Utils/Zustand";
-import shallow from 'zustand/shallow'
+import shallow from "zustand/shallow";
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { Colors } from "../../styles/colors";
 import CardList from "../Organisms/CardList";
@@ -20,25 +20,29 @@ const Home = (props) => {
       user: store.users[props.userKey],
       cardLists: store.users[props.userKey].cardLists,
       addCardList: store.addCardList,
-      deleteCardList: store.deleteCardList
-    }), shallow
+      deleteCardList: store.deleteCardList,
+    }),
+    shallow
   );
 
   const toggleCardListInput = () => {
-    setAddCardListInput(!addCardListInput)
-  }
-
-  const onAddCardList = cardListTitle => {
-    addCardList(cardListTitle)
+    setAddCardListInput(!addCardListInput);
   };
 
-  const onDeleteCardList = cardListKey => {
-    deleteCardList(cardListKey)
+  const onAddCardList = (cardListTitle) => {
+    addCardList(cardListTitle);
+  };
+
+  const onDeleteCardList = (cardListKey) => {
+    deleteCardList(cardListKey);
   };
 
   return (
-    <KeyboardAwareScrollView style={styles.home} automaticallyAdjustContentInsets={true} enableOnAndroid={true}>
-
+    <KeyboardAwareScrollView
+      style={styles.home}
+      automaticallyAdjustContentInsets={true}
+      enableOnAndroid={true}
+    >
       <View style={styles.titleContainer}>
         <Text h1 h1Style={styles.greeting}>
           Hi, {user.name === "Preview" ? "There" : user.name}!
@@ -60,7 +64,11 @@ const Home = (props) => {
         ))}
       </View>
 
-      <AddCardListInput visible={addCardListInput} hide={() => setAddCardListInput(false)} addCardList={(props) => onAddCardList(props)}></AddCardListInput>
+      <AddCardListInput
+        visible={addCardListInput}
+        hide={() => setAddCardListInput(false)}
+        addCardList={(props) => onAddCardList(props)}
+      ></AddCardListInput>
 
       <Button
         size={40}
@@ -74,7 +82,6 @@ const Home = (props) => {
           Log Out
         </Text>
       </View>
-
     </KeyboardAwareScrollView>
   );
 };
@@ -82,7 +89,7 @@ const Home = (props) => {
 const styles = StyleSheet.create({
   home: {
     backgroundColor: Colors.primaryDark,
-    width: '100%'
+    width: "100%",
   },
   titleContainer: {
     color: "#fff",

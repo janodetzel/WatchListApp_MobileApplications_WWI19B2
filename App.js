@@ -26,10 +26,18 @@ async function changeScreenOrientation() {
   );
 }
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   enableMapSet();
   changeScreenOrientation();
+
+  useEffect(() => {
+    const clearStorage = async () => {
+      await AsyncStorage.clear();
+    };
+    // clearStorage();
+  }, []);
 
   let [fontsLoaded] = useFonts({
     DMMono_500Medium,
@@ -42,21 +50,20 @@ export default function App() {
       deleteUser: store.deleteUser,
       logIn: store.logIn,
       logOut: store.logOut,
-      store: store
+      store: store,
     }),
     shallow
   );
 
-
-  const onLogIn = cred => {
-    console.log("LogIn Store", store)
+  const onLogIn = (cred) => {
+    console.log("LogIn Store", store);
     addUser(cred);
     logIn(cred);
   };
 
   const onLogOut = () => {
     logOut();
-    console.log("LogOut Store", store)
+    console.log("LogOut Store", store);
   };
 
   if (!fontsLoaded) {
@@ -64,15 +71,16 @@ export default function App() {
   } else {
     return (
       <SafeAreaView style={styles.app}>
-
         <StatusBar style="auto" />
 
         {userKey ? (
           <Home userKey={userKey} logOut={onLogOut} />
         ) : (
-            <Login logIn={(cred) => onLogIn(cred)} deleteUser={(userName) => deleteUser(userName)}></Login>
-          )}
-
+          <Login
+            logIn={(cred) => onLogIn(cred)}
+            deleteUser={(userName) => deleteUser(userName)}
+          ></Login>
+        )}
       </SafeAreaView>
     );
   }

@@ -17,9 +17,10 @@ const CardList = (props) => {
     setFindMovieOverlay(!findMovieOverlay);
   };
 
-  const { addCard, deleteCard } = useStore(
+  const { addCard, checkCard, deleteCard } = useStore(
     (store) => ({
       addCard: store.addCard,
+      checkCard: store.checkCard,
       deleteCard: store.deleteCard,
     }),
     shallow
@@ -27,6 +28,11 @@ const CardList = (props) => {
 
   const onAddCard = (cardDetails) => {
     addCard(cardDetails, props.cardListKey);
+  };
+
+  const onCheckCard = (checked, cardKey) => {
+    console.log("CHECK CARD", !checked + cardKey + props.cardListKey);
+    checkCard(!checked, cardKey, props.cardListKey);
   };
 
   const onDeleteCard = (cardKey) => {
@@ -44,10 +50,14 @@ const CardList = (props) => {
       <View style={styles.scrollContainer}>
         <ScrollView horizontal={true}>
           {Object.entries(props.cards).map(([key, card]) => {
+            console.log("RENDER CARD", card.created);
             return (
               <Card
                 key={key}
                 cardDetails={card.details}
+                created={card.created}
+                checked={card.checked}
+                checkCard={() => onCheckCard(card.checked, key)}
                 deleteCard={() => onDeleteCard(key)}
                 new={false}
               ></Card>
