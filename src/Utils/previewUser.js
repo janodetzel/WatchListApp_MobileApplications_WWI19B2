@@ -1,4 +1,4 @@
-{
+export default previewUser = {
   "656e4534-3231-4f55-b483-558eb5999bf2": {
     "name": "Preview",
     "cardLists": {

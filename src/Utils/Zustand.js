@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import previewUser from './previewUser.json'
+import previewUser from './previewUser'
 
 export const usenotStore = create((set, get) => ({
 }));
@@ -17,7 +17,7 @@ export const useStore = create(
     (set, get) => ({
 
       currUserKey: null,
-      users: { previewUser },
+      users: { ...previewUser },
 
       getUserByName: userName => Object.keys(get().users).find(key => get().users[key].name.toUpperCase() === userName.toUpperCase()),
 
