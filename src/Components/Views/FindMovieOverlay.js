@@ -4,9 +4,7 @@ import { StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
 import { Text, Overlay, Input } from "react-native-elements";
 
 import { REACT_APP_MOVIE_DB_API_TOKEN } from "@env";
-import { posterSrcSm } from "../../Utils/theMovieDB";
 import { Colors } from "../../styles/colors";
-import Button from "../Atoms/Button";
 
 import FindMovieResult from "../Molekules/FindMovieResult";
 
@@ -98,9 +96,7 @@ const FindMovieOverlay = (props) => {
           textContentType="nickname"
           enablesReturnKeyAutomatically={true}
           placeholder={placeholder}
-          // rightIcon={<Button type="navigation" onPress={() => handleSubmit()} />}
           value={input}
-          // onSubmitEditing={() => handleSubmit()}
           onChangeText={(text) => setInput(text)}
           autoFocus={true}
           onEndEditing={resetInput}

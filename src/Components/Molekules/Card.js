@@ -3,29 +3,20 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  Dimensions,
-  TouchableHighlight,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Text, Image, CheckBox, Icon } from "react-native-elements";
+
+import { Text, Image } from "react-native-elements";
 import ReadMore from "@fawazahmed/react-native-read-more";
 import Moment from "moment";
 
+import { Colors } from "../../styles/colors";
 import { REACT_APP_MOVIE_DB_API_TOKEN } from "@env";
 import { posterSrcSm } from "../../Utils/theMovieDB";
-import { Colors } from "../../styles/colors";
-
 import Button from "../Atoms/Button";
 
 const CardList = (props) => {
   const [isPress, setIsPress] = React.useState(false);
-
-  const touchProps = {
-    activeOpacity: 1,
-    underlayColor: Colors.primaryDark,
-    style: isPress ? [styles.card, styles.pressed] : [styles.card],
-    onPress: () => setIsPress(!isPress),
-  };
 
   const cardProps = {
     style: props.checked
@@ -149,9 +140,6 @@ const styles = StyleSheet.create({
     minHeight: 350,
     width: 250,
     minWidth: 200,
-
-    // transform: [{ translateX: 130 }],
-    // marginRight: -130,
 
     marginVertical: 50,
     marginHorizontal: 8,

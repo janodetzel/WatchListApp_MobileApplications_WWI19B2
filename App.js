@@ -26,18 +26,9 @@ async function changeScreenOrientation() {
   );
 }
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export default function App() {
   enableMapSet();
   changeScreenOrientation();
-
-  useEffect(() => {
-    const clearStorage = async () => {
-      await AsyncStorage.clear();
-    };
-    // clearStorage();
-  }, []);
 
   let [fontsLoaded] = useFonts({
     DMMono_500Medium,
@@ -56,14 +47,12 @@ export default function App() {
   );
 
   const onLogIn = (cred) => {
-    console.log("LogIn Store", store);
     addUser(cred);
     logIn(cred);
   };
 
   const onLogOut = () => {
     logOut();
-    console.log("LogOut Store", store);
   };
 
   if (!fontsLoaded) {

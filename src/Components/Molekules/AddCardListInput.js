@@ -1,9 +1,8 @@
-import React, { useState, createRef, useEffect } from "react";
+import React, { useState, createRef } from "react";
 import { StyleSheet, View } from "react-native";
-import { Icon, Input } from "react-native-elements";
+import { Input } from "react-native-elements";
 
 import { Colors } from "../../styles/colors";
-import Button from "../Atoms/Button";
 
 const AddCardListInput = (props) => {
   const placeholder = "Title";

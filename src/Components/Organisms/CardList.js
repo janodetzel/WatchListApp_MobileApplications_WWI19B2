@@ -31,7 +31,6 @@ const CardList = (props) => {
   };
 
   const onCheckCard = (checked, cardKey) => {
-    console.log("CHECK CARD", !checked + cardKey + props.cardListKey);
     checkCard(!checked, cardKey, props.cardListKey);
   };
 
@@ -50,7 +49,6 @@ const CardList = (props) => {
       <View style={styles.scrollContainer}>
         <ScrollView horizontal={true}>
           {Object.entries(props.cards).map(([key, card]) => {
-            console.log("RENDER CARD", card.created);
             return (
               <Card
                 key={key}

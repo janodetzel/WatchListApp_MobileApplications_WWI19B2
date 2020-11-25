@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { Icon } from "react-native-elements";
 
 import { Colors } from "../../styles/colors";
@@ -15,12 +15,6 @@ const Button = (props) => {
       // setIsPress(!isPress)
       props.onPress();
     },
-  };
-
-  const checkProps = {
-    type: "feather",
-    color: isPress ? Colors.green : Colors.pink,
-    style: [styles.icon],
   };
 
   switch (props.type) {
