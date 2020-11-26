@@ -1,16 +1,21 @@
 import React, { useState, createRef, useEffect } from "react";
-import { StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
+import { StyleSheet, SafeAreaView, FlatList, ActivityIndicator, View } from "react-native";
 
 import i18n from "i18n-js";
 
 import { Text, Overlay, Input } from "react-native-elements";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import { v4 as uuidv4 } from "uuid";
+
 
 import { REACT_APP_MOVIE_DB_API_TOKEN } from "@env";
 import { Colors } from "../../styles/colors";
 
 import FindMovieResult from "../Molekules/FindMovieResult";
+import Button from "../Atoms/Button";
 
 const FindMovieOverlay = (props) => {
+  const { promiseInProgress } = usePromiseTracker();
   const placeholder = "Let's find a Movie";
   const [input, setInput] = useState("");
   const [page, setPage] = useState(1);
@@ -18,38 +23,31 @@ const FindMovieOverlay = (props) => {
 
   const [results, setResults] = useState([]);
 
+  const key = REACT_APP_MOVIE_DB_API_TOKEN;
+  const requestString = `https://api.themoviedb.org/3/search/multi?api_key=${key}&language=${i18n.locale}&query=${input}&page=${page}&include_adult=true`
+
   useEffect(() => {
-    const key = REACT_APP_MOVIE_DB_API_TOKEN;
-
-    const searchRequest =
-      "https://api.themoviedb.org/3/search/multi?api_key=" +
-      key +
-      "&language=" +
-      i18n.locale +
-      "&query=" +
-      input +
-      "&page=" +
-      page +
-      "&include_adult=false";
-
     if (input) {
-      const fetchData = async () => {
-        const data = await fetch(searchRequest).then((res) => res.json());
-        return await data;
-      };
-
-      fetchData().then((data) => {
-        try {
-          var filtered = data.results.filter(
-            (res) => res.poster_path != null && res.overview != ""
-          );
-          setResults(filtered);
-        } catch (error) {
-          console.log(error);
+      trackPromise(
+        fetchData().then((data) => {
+          try {
+            var filtered = data.results.filter(
+              (res) => res.poster_path != null && res.overview != ""
+            );
+            setResults(filtered);
+          } catch (error) {
+            console.log(error);
+          }
         }
-      });
+        )
+      );
     }
   }, [input]);
+
+  const fetchData = async () => {
+    const data = await fetch(requestString).then((res) => res.json());
+    return await data;
+  };
 
   const onSubmit = (cardDetails) => {
     if (cardDetails) {
@@ -66,33 +64,42 @@ const FindMovieOverlay = (props) => {
     inputRef.current.clear();
   };
 
-  const renderResults = (results) => {
-    if (results.length > 0) {
-      return results.map((result, key) => {
-        return (
-          <FindMovieResult
-            key={key}
-            onPress={() => onSubmit(result)}
-            title={result.title ? result.title : result.name}
-            releaseDate={result.release_date}
-            overview={result.overview}
-            posterPath={result.poster_path}
-          >
-            {" "}
-          </FindMovieResult>
-        );
-      });
-    } else if (input) {
-      return <Text style={styles.noMovie}>Type in something else.</Text>;
-    } else {
-      return [];
-    }
+  const renderResult = ({ item }) => {
+    return (
+      <FindMovieResult
+        onPress={() => onSubmit(item)}
+        title={item.title ? item.title : item.name}
+        releaseDate={item.release_date}
+        overview={item.overview}
+        posterPath={item.poster_path}
+      ></FindMovieResult>
+    )
   };
 
+  const renderResults = () => {
+    if (results.length > 0 || input == []) {
+      return (
+        <View style={styles.resultsContainer}>
+          <FlatList
+            data={results}
+            renderItem={renderResult}
+            keyExtractor={() => uuidv4()}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <Text style={styles.noMovie}>No luck.</Text>
+      )
+    }
+  }
+
   return (
+
     <Overlay
       isVisible={props.isVisible}
-      onBackdropPress={props.toggleOverlay}
       fullScreen={true}
       animationType="slide"
       overlayStyle={styles.overlay}
@@ -110,13 +117,16 @@ const FindMovieOverlay = (props) => {
           onChangeText={(text) => setInput(text)}
           autoFocus={true}
           underlineColorAndroid="transparent"
-          textAlign={"center"}
+          textAlign={"left"}
+          rightIcon={<Button type="close" onPress={props.toggleOverlay}></Button>}
+        // leftIcon={<Button type="close" onPress={props.toggleOverlay}></Button>}
         />
-        <ScrollView style={styles.resultsContainer}>
-          {renderResults(results)}
-        </ScrollView>
+        {
+          promiseInProgress ? <ActivityIndicator /> : renderResults()
+        }
       </SafeAreaView>
     </Overlay>
+
   );
 };
 
@@ -144,6 +154,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     color: Colors.white,
   },
+  closeButton: {
+    position: "absolute",
+    top: 64,
+    right: 32
+  }
 });
 
 export default FindMovieOverlay;

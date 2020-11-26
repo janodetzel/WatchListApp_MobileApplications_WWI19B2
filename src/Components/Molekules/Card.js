@@ -35,24 +35,15 @@ const CardList = (props) => {
     if (state.id) {
       const key = REACT_APP_MOVIE_DB_API_TOKEN;
 
-      const dataRequest =
-        "https://api.themoviedb.org/3/" +
-        props.mediaType +
-        props.cardDetails.id +
-        "?api_key=" +
-        key +
-        "&language=" +
-        i18n.locale;
+      const requestString = `https://api.themoviedb.org/3/${props.mediaType}/${props.cardDetails.id}?api_key${key}&language${i18n.locale}`
+
 
       const fetchData = async () => {
-        const data = await fetch(dataRequest).then((res) => res.json());
-        console.log("FETCH", await data);
+        const data = await fetch(requestString).then((res) => res.json());
         setState({ ...state, ...data });
       };
 
       fetchData();
-
-      // console.log(state);
     }
   }, []);
 
@@ -159,6 +150,7 @@ const styles = StyleSheet.create({
 
     backgroundColor: Colors.secondaryDark,
     shadowColor: Colors.black,
+
     shadowOffset: {
       width: -16,
       height: 0,

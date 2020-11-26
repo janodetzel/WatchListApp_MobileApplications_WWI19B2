@@ -36,6 +36,9 @@ const Button = (props) => {
     case "navigation": {
       return <Icon name="navigation" size={props.size} {...buttonProps}></Icon>;
     }
+    case "close": {
+      return <Icon name="x" size={props.size} {...buttonProps}></Icon>;
+    }
     default:
       return (
         <Icon name="plus-circle" size={props.size} {...buttonProps}></Icon>

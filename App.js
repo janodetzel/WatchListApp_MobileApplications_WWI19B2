@@ -52,6 +52,7 @@ export default function App() {
 
   const onLogIn = (cred) => {
     console.log(i18n.locale);
+    console.log("STATE", store)
     addUser(cred);
     logIn(cred);
   };
@@ -70,11 +71,11 @@ export default function App() {
         {userKey ? (
           <Home userKey={userKey} logOut={onLogOut} />
         ) : (
-          <Login
-            logIn={(cred) => onLogIn(cred)}
-            deleteUser={(userName) => deleteUser(userName)}
-          ></Login>
-        )}
+            <Login
+              logIn={(cred) => onLogIn(cred)}
+              deleteUser={(userName) => deleteUser(userName)}
+            ></Login>
+          )}
       </SafeAreaView>
     );
   }

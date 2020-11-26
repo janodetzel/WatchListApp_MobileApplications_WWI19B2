@@ -47,7 +47,11 @@ const CardList = (props) => {
         <Button type={"delete"} onPress={() => props.deleteList()}></Button>
       </View>
       <View style={styles.scrollContainer}>
-        <ScrollView horizontal={true}>
+        <ScrollView
+          horizontal={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
+
           {Object.entries(props.cards).map(([key, card]) => {
             return (
               <Card
