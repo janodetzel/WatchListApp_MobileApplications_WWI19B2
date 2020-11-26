@@ -37,7 +37,7 @@ const FindMoiveResult = (props) => {
 
           <ReadMore
             wrapperStyle={[styles.overview, styles.font]}
-            numberOfLines={2}
+            numberOfLines={5}
             seeMoreText={"Read more ▼"}
             seeLessText={"Read less ▲"}
             seeLessStyle={{ color: Colors.pink }}
@@ -69,8 +69,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   poster: {
-    width: 53,
-    height: 75,
+    // width: 53,
+    // height: 75,
+    width: "50%",
+    height: undefined,
+    aspectRatio: 0.75,
     borderRadius: 8,
   },
   contentWrapper: {

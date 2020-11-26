@@ -99,9 +99,7 @@ const FindMovieOverlay = (props) => {
           value={input}
           onChangeText={(text) => setInput(text)}
           autoFocus={true}
-          onEndEditing={resetInput}
           underlineColorAndroid="transparent"
-          clearTextOnFocus={true}
           textAlign={"center"}
         />
         <ScrollView style={styles.resultsContainer}>
