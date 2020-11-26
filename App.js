@@ -9,6 +9,9 @@ import { useStore } from "./src/Utils/Zustand";
 import shallow from "zustand/shallow";
 import { enableMapSet } from "immer";
 
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
+
 import Home from "./src/Components/Views/Home";
 import { Colors } from "./src/styles/colors";
 import Login from "./src/Components/Views/Login";
@@ -29,6 +32,7 @@ async function changeScreenOrientation() {
 export default function App() {
   enableMapSet();
   changeScreenOrientation();
+  i18n.locale = Localization.locale;
 
   let [fontsLoaded] = useFonts({
     DMMono_500Medium,
@@ -47,6 +51,7 @@ export default function App() {
   );
 
   const onLogIn = (cred) => {
+    console.log(i18n.locale);
     addUser(cred);
     logIn(cred);
   };

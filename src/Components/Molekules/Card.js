@@ -10,6 +10,8 @@ import { Text, Image } from "react-native-elements";
 import ReadMore from "@fawazahmed/react-native-read-more";
 import Moment from "moment";
 
+import i18n from "i18n-js";
+
 import { Colors } from "../../styles/colors";
 import { REACT_APP_MOVIE_DB_API_TOKEN } from "@env";
 import { posterSrcSm } from "../../Utils/theMovieDB";
@@ -30,7 +32,6 @@ const CardList = (props) => {
   });
 
   useEffect(() => {
-    console.log(props.mediaType);
     if (state.id) {
       const key = REACT_APP_MOVIE_DB_API_TOKEN;
 
@@ -39,14 +40,19 @@ const CardList = (props) => {
         props.mediaType +
         props.cardDetails.id +
         "?api_key=" +
-        key;
+        key +
+        "&language=" +
+        i18n.locale;
 
       const fetchData = async () => {
         const data = await fetch(dataRequest).then((res) => res.json());
+        console.log("FETCH", await data);
         setState({ ...state, ...data });
       };
 
       fetchData();
+
+      // console.log(state);
     }
   }, []);
 
@@ -84,7 +90,7 @@ const CardList = (props) => {
 
             <ReadMore
               wrapperStyle={[styles.overview, styles.font]}
-              numberOfLines={2}
+              numberOfLines={3}
               seeMoreText={"Read more ▼"}
               seeLessText={"Read less ▲"}
               seeLessStyle={{ color: Colors.pink }}

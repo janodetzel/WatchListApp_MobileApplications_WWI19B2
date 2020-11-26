@@ -1,10 +1,5 @@
 import React, { useState, createRef } from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Text, Input } from "react-native-elements";
 
 import { useStore } from "../../Utils/Zustand";
@@ -58,7 +53,6 @@ const Login = (props) => {
   };
 
   const renderDeleteText = () => {
-    // Vibration.vibrate();
     if (userToDelete) {
       return (
         <Text style={styles.delete} onPress={() => onDeleteUser(userToDelete)}>
@@ -80,7 +74,7 @@ const Login = (props) => {
         placeholder={placeholder}
         value={input}
         onChangeText={(text) => setInput(text)}
-        // onSubmitEditing={() => onSubmit()}
+        onSubmitEditing={() => onSubmit()}
         // onEndEditing={resetInput}
       />
 

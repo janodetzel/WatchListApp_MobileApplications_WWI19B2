@@ -1,6 +1,8 @@
 import React, { useState, createRef, useEffect } from "react";
 import { StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
 
+import i18n from "i18n-js";
+
 import { Text, Overlay, Input } from "react-native-elements";
 
 import { REACT_APP_MOVIE_DB_API_TOKEN } from "@env";
@@ -22,8 +24,9 @@ const FindMovieOverlay = (props) => {
     const searchRequest =
       "https://api.themoviedb.org/3/search/multi?api_key=" +
       key +
-      "&language=en-US&" +
-      "query=" +
+      "&language=" +
+      i18n.locale +
+      "&query=" +
       input +
       "&page=" +
       page +
