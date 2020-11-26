@@ -74,14 +74,14 @@ const Login = (props) => {
         ref={inputRef}
         style={styles.input}
         selectionColor={Colors.green}
-        // textContentType="username"
+        rightIcon={<Button type="navigation" onPress={() => onSubmit()} />}
+        textContentType="nickname"
         enablesReturnKeyAutomatically={false}
         placeholder={placeholder}
-        rightIcon={<Button type="navigation" onPress={() => onSubmit()} />}
         value={input}
-        onSubmitEditing={() => onSubmit()}
         onChangeText={(text) => setInput(text)}
-        onEndEditing={resetInput}
+        // onSubmitEditing={() => onSubmit()}
+        // onEndEditing={resetInput}
       />
 
       <View style={styles.recents}>

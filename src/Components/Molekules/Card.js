@@ -30,17 +30,20 @@ const CardList = (props) => {
   });
 
   useEffect(() => {
+    console.log(props.mediaType);
     if (state.id) {
       const key = REACT_APP_MOVIE_DB_API_TOKEN;
-      const string =
-        "https://api.themoviedb.org/3/movie/" +
+
+      const dataRequest =
+        "https://api.themoviedb.org/3/" +
+        props.mediaType +
         props.cardDetails.id +
         "?api_key=" +
         key;
 
       const fetchData = async () => {
-        const result = await fetch(string).then((res) => res.json());
-        setState({ ...state, ...result });
+        const data = await fetch(dataRequest).then((res) => res.json());
+        setState({ ...state, ...data });
       };
 
       fetchData();
@@ -70,7 +73,7 @@ const CardList = (props) => {
 
             <View style={styles.titleBar}>
               <Text h4 style={[styles.title, styles.font]}>
-                {state.title}
+                {state.title ? state.title : state.name}
               </Text>
               <Text style={[styles.date, styles.font]}>
                 {Moment(state.release_date).format("YYYY")}

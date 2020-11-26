@@ -55,6 +55,7 @@ const CardList = (props) => {
                 cardDetails={card.details}
                 created={card.created}
                 checked={card.checked}
+                mediaType={card.details.media_type || "movie"}
                 checkCard={() => onCheckCard(card.checked, key)}
                 deleteCard={() => onDeleteCard(key)}
                 new={false}

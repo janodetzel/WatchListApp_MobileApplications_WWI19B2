@@ -65,13 +65,14 @@ const styles = StyleSheet.create({
   },
   posterWrapper: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
+    marginRight: 8,
   },
   poster: {
     // width: 53,
     // height: 75,
-    width: "50%",
+    width: "100%",
     height: undefined,
     aspectRatio: 0.75,
     borderRadius: 8,

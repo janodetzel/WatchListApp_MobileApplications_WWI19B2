@@ -11,6 +11,7 @@ import FindMovieResult from "../Molekules/FindMovieResult";
 const FindMovieOverlay = (props) => {
   const placeholder = "Let's find a Movie";
   const [input, setInput] = useState("");
+  const [page, setPage] = useState(1);
   const inputRef = createRef();
 
   const [results, setResults] = useState([]);
@@ -18,27 +19,32 @@ const FindMovieOverlay = (props) => {
   useEffect(() => {
     const key = REACT_APP_MOVIE_DB_API_TOKEN;
 
-    const string =
-      "https://api.themoviedb.org/3/search/movie?api_key=" +
+    const searchRequest =
+      "https://api.themoviedb.org/3/search/multi?api_key=" +
       key +
       "&language=en-US&" +
       "query=" +
       input +
-      "&page=1&include_adult=false";
+      "&page=" +
+      page +
+      "&include_adult=false";
 
     if (input) {
-      fetch(string)
-        .then((res) => res.json())
-        .then((data) => {
-          try {
-            var filtered = data.results.filter(
-              (res) => res.poster_path != null && res.overview != ""
-            );
-            setResults(filtered);
-          } catch (error) {
-            console.log(error);
-          }
-        });
+      const fetchData = async () => {
+        const data = await fetch(searchRequest).then((res) => res.json());
+        return await data;
+      };
+
+      fetchData().then((data) => {
+        try {
+          var filtered = data.results.filter(
+            (res) => res.poster_path != null && res.overview != ""
+          );
+          setResults(filtered);
+        } catch (error) {
+          console.log(error);
+        }
+      });
     }
   }, [input]);
 
@@ -64,7 +70,7 @@ const FindMovieOverlay = (props) => {
           <FindMovieResult
             key={key}
             onPress={() => onSubmit(result)}
-            title={result.title}
+            title={result.title ? result.title : result.name}
             releaseDate={result.release_date}
             overview={result.overview}
             posterPath={result.poster_path}
@@ -85,6 +91,7 @@ const FindMovieOverlay = (props) => {
       isVisible={props.isVisible}
       onBackdropPress={props.toggleOverlay}
       fullScreen={true}
+      animationType="slide"
       overlayStyle={styles.overlay}
     >
       <SafeAreaView style={styles.overlayContent}>
