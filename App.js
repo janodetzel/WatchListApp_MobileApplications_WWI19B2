@@ -52,8 +52,6 @@ export default function App() {
   );
 
   const onLogIn = (cred) => {
-    console.log(i18n.locale);
-    console.log("STATE", store)
     addUser(cred);
     logIn(cred);
   };
