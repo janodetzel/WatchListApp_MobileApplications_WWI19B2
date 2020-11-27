@@ -119,7 +119,6 @@ const FindMovieOverlay = (props) => {
           underlineColorAndroid="transparent"
           textAlign={"left"}
           rightIcon={<Button type="close" onPress={props.toggleOverlay}></Button>}
-        // leftIcon={<Button type="close" onPress={props.toggleOverlay}></Button>}
         />
         {
           promiseInProgress ? <ActivityIndicator /> : renderResults()

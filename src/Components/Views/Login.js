@@ -75,7 +75,7 @@ const Login = (props) => {
         value={input}
         onChangeText={(text) => setInput(text)}
         onSubmitEditing={() => onSubmit()}
-        // onEndEditing={resetInput}
+      // onEndEditing={resetInput}
       />
 
       <View style={styles.recents}>
@@ -89,8 +89,8 @@ const Login = (props) => {
               aValue.timestamp > bValue.timestamp
                 ? -1
                 : bValue.timestamp > aValue.timestamp
-                ? 1
-                : 0
+                  ? 1
+                  : 0
             )
             .slice(0, 9)
             .map(([key, user]) => {
@@ -154,9 +154,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-
-/**
- * Notes:
- *
- * 60: Sort map by object property timestamp to render 9 most recent users first
- */

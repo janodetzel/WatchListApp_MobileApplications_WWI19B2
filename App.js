@@ -34,6 +34,7 @@ export default function App() {
   changeScreenOrientation();
   i18n.locale = Localization.locale;
 
+
   let [fontsLoaded] = useFonts({
     DMMono_500Medium,
   });

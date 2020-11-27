@@ -18,8 +18,6 @@ import { posterSrcSm } from "../../Utils/theMovieDB";
 import Button from "../Atoms/Button";
 
 const CardList = (props) => {
-  const [isPress, setIsPress] = React.useState(false);
-
   const cardProps = {
     style: props.checked
       ? [styles.card, styles.checked]
@@ -35,8 +33,7 @@ const CardList = (props) => {
     if (state.id) {
       const key = REACT_APP_MOVIE_DB_API_TOKEN;
 
-      const requestString = `https://api.themoviedb.org/3/${props.mediaType}/${props.cardDetails.id}?api_key${key}&language${i18n.locale}`
-
+      const requestString = `https://api.themoviedb.org/3/${props.mediaType}/${state.id}?api_key=${key}&language=${i18n.locale}`
 
       const fetchData = async () => {
         const data = await fetch(requestString).then((res) => res.json());
@@ -227,6 +224,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: "bold",
     fontSize: 8,
+    textAlign: "center"
   },
   checkBox: {
     position: "absolute",
