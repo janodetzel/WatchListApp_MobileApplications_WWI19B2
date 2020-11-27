@@ -29,6 +29,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "With WatchList-App you can manage films and tv shows in your personal library.\n\nYou can create different WatchLists and check the films and tv shows you have already seen.\n\nThe added films or tv shows are clearly displayed next to each other in the form of cards.\n\nOn the cards you will find information about the film or tv show such as title, tagline, year of release, a short description and genres. \n\nYou can also see the date on which the card was created.",
+    "githubUrl": "https://github.com/janodetzel/WatchListApp_MobileApplications_WWI19B2"
   }
 }
